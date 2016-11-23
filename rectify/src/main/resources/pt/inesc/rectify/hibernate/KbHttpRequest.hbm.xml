@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 23, 2016 11:54:35 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pt.inesc.rectify.hibernate.KbHttpRequest" table="kb_http_request" catalog="rectify" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="ts" type="timestamp">
+            <column name="ts" length="19" not-null="true" />
+        </property>
+        <property name="request" type="string">
+            <column name="request" length="10000" />
+        </property>
+        <set name="kbHttpRequestPartses" table="kb_http_request_parts" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_kb_http_request" not-null="true" />
+            </key>
+            <one-to-many class="pt.inesc.rectify.hibernate.KbHttpRequestParts" />
+        </set>
+        <set name="kbHttpResponses" table="kb_http_response" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_kb_http_request" not-null="true" />
+            </key>
+            <one-to-many class="pt.inesc.rectify.hibernate.KbHttpResponse" />
+        </set>
+    </class>
+</hibernate-mapping>
