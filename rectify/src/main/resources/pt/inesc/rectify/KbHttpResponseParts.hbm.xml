@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 29, 2016 11:21:05 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class catalog="rectify" name="pt.inesc.rectify.hibernate.KbHttpResponseParts" optimistic-lock="version" table="kb_http_response_parts">
+    <id name="id" type="java.lang.Integer">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="pt.inesc.rectify.hibernate.KbHttpResponse" fetch="select" name="kbHttpResponse">
+      <column name="id_kb_http_response" not-null="true"/>
+    </many-to-one>
+    <property name="type" type="string">
+      <column name="type"/>
+    </property>
+    <property name="partKey" type="string">
+      <column name="part_key"/>
+    </property>
+    <property name="value" type="string">
+      <column length="1024" name="value"/>
+    </property>
+  </class>
+</hibernate-mapping>

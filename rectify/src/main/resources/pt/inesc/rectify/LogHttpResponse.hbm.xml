@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 29, 2016 11:21:05 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class catalog="rectify" name="pt.inesc.rectify.hibernate.LogHttpResponse" optimistic-lock="version" table="log_http_response">
+    <id name="id" type="java.lang.Integer">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="pt.inesc.rectify.hibernate.LogHttpRequest" fetch="select" name="logHttpRequest">
+      <column name="id_log_http_request" not-null="true"/>
+    </many-to-one>
+    <property name="ts" type="timestamp">
+      <column length="19" name="ts" not-null="true"/>
+    </property>
+    <property name="response" type="string">
+      <column length="10000" name="response"/>
+    </property>
+  </class>
+</hibernate-mapping>

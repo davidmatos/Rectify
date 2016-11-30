@@ -41,15 +41,16 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="rectify"/>
-  <table-filter match-name="log_db_request"/>
-  <table-filter match-name="kb_http_request_parts"/>
-  <table-filter match-name="log_db_response"/>
+  <table-filter match-name="kb_http_response"/>
+  <table-filter match-name="log_http_response"/>
+  <table-filter match-name="kb_db_op"/>
+  <table-filter match-name="kb_http_request"/>
+  <table-filter match-name="log_db_operation"/>
+  <table-filter match-name="logs"/>
   <table-filter match-name="log_http_request"/>
   <table-filter match-name="kb_db_op_parts"/>
-  <table-filter match-name="kb_http_response"/>
-  <table-filter match-name="kb_db_op"/>
-  <table-filter match-name="log_http_response"/>
-  <table-filter match-name="configuration"/>
   <table-filter match-name="kb_http_response_parts"/>
-  <table-filter match-name="kb_http_request"/>
+  <table-filter match-name="log_db_sub_operation"/>
+  <table-filter match-name="kb_http_request_parts"/>
+  <table-filter match-name="configuration"/>
 </hibernate-reverse-engineering>

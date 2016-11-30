@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `rectify` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `rectify`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: rectify
@@ -53,7 +51,10 @@ CREATE TABLE `kb_db_op` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `query` varchar(1024) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id_kb_http_request` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_kb_http_request_idx` (`id_kb_http_request`),
+  CONSTRAINT `id_kb_http_request` FOREIGN KEY (`id_kb_http_request`) REFERENCES `kb_http_request` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -201,13 +202,13 @@ LOCK TABLES `kb_http_response_parts` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `log_db_request`
+-- Table structure for table `log_db_operation`
 --
 
-DROP TABLE IF EXISTS `log_db_request`;
+DROP TABLE IF EXISTS `log_db_operation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `log_db_request` (
+CREATE TABLE `log_db_operation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `request` varchar(1024) DEFAULT NULL,
@@ -216,39 +217,38 @@ CREATE TABLE `log_db_request` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `log_db_request`
+-- Dumping data for table `log_db_operation`
 --
 
-LOCK TABLES `log_db_request` WRITE;
-/*!40000 ALTER TABLE `log_db_request` DISABLE KEYS */;
-/*!40000 ALTER TABLE `log_db_request` ENABLE KEYS */;
+LOCK TABLES `log_db_operation` WRITE;
+/*!40000 ALTER TABLE `log_db_operation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `log_db_operation` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `log_db_response`
+-- Table structure for table `log_db_sub_operation`
 --
 
-DROP TABLE IF EXISTS `log_db_response`;
+DROP TABLE IF EXISTS `log_db_sub_operation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `log_db_response` (
+CREATE TABLE `log_db_sub_operation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `response` varchar(1024) DEFAULT NULL,
-  `id_log_db_response` int(11) NOT NULL,
+  `pk` int(11) DEFAULT NULL,
+  `id_log_db_operation` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `id_log_db_response` (`id_log_db_response`),
-  CONSTRAINT `log_db_response_ibfk_1` FOREIGN KEY (`id_log_db_response`) REFERENCES `log_db_request` (`id`)
+  KEY `id_log_db_operation` (`id_log_db_operation`),
+  CONSTRAINT `log_db_sub_operation_ibfk_1` FOREIGN KEY (`id_log_db_operation`) REFERENCES `log_db_operation` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `log_db_response`
+-- Dumping data for table `log_db_sub_operation`
 --
 
-LOCK TABLES `log_db_response` WRITE;
-/*!40000 ALTER TABLE `log_db_response` DISABLE KEYS */;
-/*!40000 ALTER TABLE `log_db_response` ENABLE KEYS */;
+LOCK TABLES `log_db_sub_operation` WRITE;
+/*!40000 ALTER TABLE `log_db_sub_operation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `log_db_sub_operation` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -311,4 +311,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-24 12:31:42
+-- Dump completed on 2016-11-29 19:09:55

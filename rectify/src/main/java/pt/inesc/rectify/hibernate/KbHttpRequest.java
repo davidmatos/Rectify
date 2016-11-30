@@ -1,5 +1,5 @@
 package pt.inesc.rectify.hibernate;
-// Generated Nov 23, 2016 11:54:34 AM by Hibernate Tools 4.3.1
+// Generated Nov 29, 2016 11:21:05 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -15,8 +15,9 @@ public class KbHttpRequest  implements java.io.Serializable {
      private Integer id;
      private Date ts;
      private String request;
-     private Set kbHttpRequestPartses = new HashSet(0);
-     private Set kbHttpResponses = new HashSet(0);
+     private Set<KbHttpRequestParts> kbHttpRequestPartses = new HashSet<KbHttpRequestParts>(0);
+     private Set<KbHttpResponse> kbHttpResponses = new HashSet<KbHttpResponse>(0);
+     private Set<KbDbOp> kbDbOps = new HashSet<KbDbOp>(0);
 
     public KbHttpRequest() {
     }
@@ -25,11 +26,12 @@ public class KbHttpRequest  implements java.io.Serializable {
     public KbHttpRequest(Date ts) {
         this.ts = ts;
     }
-    public KbHttpRequest(Date ts, String request, Set kbHttpRequestPartses, Set kbHttpResponses) {
+    public KbHttpRequest(Date ts, String request, Set<KbHttpRequestParts> kbHttpRequestPartses, Set<KbHttpResponse> kbHttpResponses, Set<KbDbOp> kbDbOps) {
        this.ts = ts;
        this.request = request;
        this.kbHttpRequestPartses = kbHttpRequestPartses;
        this.kbHttpResponses = kbHttpResponses;
+       this.kbDbOps = kbDbOps;
     }
    
     public Integer getId() {
@@ -53,19 +55,26 @@ public class KbHttpRequest  implements java.io.Serializable {
     public void setRequest(String request) {
         this.request = request;
     }
-    public Set getKbHttpRequestPartses() {
+    public Set<KbHttpRequestParts> getKbHttpRequestPartses() {
         return this.kbHttpRequestPartses;
     }
     
-    public void setKbHttpRequestPartses(Set kbHttpRequestPartses) {
+    public void setKbHttpRequestPartses(Set<KbHttpRequestParts> kbHttpRequestPartses) {
         this.kbHttpRequestPartses = kbHttpRequestPartses;
     }
-    public Set getKbHttpResponses() {
+    public Set<KbHttpResponse> getKbHttpResponses() {
         return this.kbHttpResponses;
     }
     
-    public void setKbHttpResponses(Set kbHttpResponses) {
+    public void setKbHttpResponses(Set<KbHttpResponse> kbHttpResponses) {
         this.kbHttpResponses = kbHttpResponses;
+    }
+    public Set<KbDbOp> getKbDbOps() {
+        return this.kbDbOps;
+    }
+    
+    public void setKbDbOps(Set<KbDbOp> kbDbOps) {
+        this.kbDbOps = kbDbOps;
     }
 
 

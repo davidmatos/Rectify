@@ -1,5 +1,5 @@
 package pt.inesc.rectify.hibernate;
-// Generated Nov 23, 2016 11:54:34 AM by Hibernate Tools 4.3.1
+// Generated Nov 29, 2016 11:21:05 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -15,7 +15,7 @@ public class KbHttpResponse  implements java.io.Serializable {
      private Integer id;
      private KbHttpRequest kbHttpRequest;
      private Date ts;
-     private Set kbHttpResponsePartses = new HashSet(0);
+     private Set<KbHttpResponseParts> kbHttpResponsePartses = new HashSet<KbHttpResponseParts>(0);
 
     public KbHttpResponse() {
     }
@@ -25,7 +25,7 @@ public class KbHttpResponse  implements java.io.Serializable {
         this.kbHttpRequest = kbHttpRequest;
         this.ts = ts;
     }
-    public KbHttpResponse(KbHttpRequest kbHttpRequest, Date ts, Set kbHttpResponsePartses) {
+    public KbHttpResponse(KbHttpRequest kbHttpRequest, Date ts, Set<KbHttpResponseParts> kbHttpResponsePartses) {
        this.kbHttpRequest = kbHttpRequest;
        this.ts = ts;
        this.kbHttpResponsePartses = kbHttpResponsePartses;
@@ -52,11 +52,11 @@ public class KbHttpResponse  implements java.io.Serializable {
     public void setTs(Date ts) {
         this.ts = ts;
     }
-    public Set getKbHttpResponsePartses() {
+    public Set<KbHttpResponseParts> getKbHttpResponsePartses() {
         return this.kbHttpResponsePartses;
     }
     
-    public void setKbHttpResponsePartses(Set kbHttpResponsePartses) {
+    public void setKbHttpResponsePartses(Set<KbHttpResponseParts> kbHttpResponsePartses) {
         this.kbHttpResponsePartses = kbHttpResponsePartses;
     }
 

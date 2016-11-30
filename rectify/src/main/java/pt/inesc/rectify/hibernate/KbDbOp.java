@@ -1,5 +1,5 @@
 package pt.inesc.rectify.hibernate;
-// Generated Nov 23, 2016 11:54:34 AM by Hibernate Tools 4.3.1
+// Generated Nov 29, 2016 11:21:05 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -13,9 +13,10 @@ public class KbDbOp  implements java.io.Serializable {
 
 
      private Integer id;
+     private KbHttpRequest kbHttpRequest;
      private Date ts;
      private String query;
-     private Set kbDbOpPartses = new HashSet(0);
+     private Set<KbDbOpParts> kbDbOpPartses = new HashSet<KbDbOpParts>(0);
 
     public KbDbOp() {
     }
@@ -24,7 +25,8 @@ public class KbDbOp  implements java.io.Serializable {
     public KbDbOp(Date ts) {
         this.ts = ts;
     }
-    public KbDbOp(Date ts, String query, Set kbDbOpPartses) {
+    public KbDbOp(KbHttpRequest kbHttpRequest, Date ts, String query, Set<KbDbOpParts> kbDbOpPartses) {
+       this.kbHttpRequest = kbHttpRequest;
        this.ts = ts;
        this.query = query;
        this.kbDbOpPartses = kbDbOpPartses;
@@ -36,6 +38,13 @@ public class KbDbOp  implements java.io.Serializable {
     
     public void setId(Integer id) {
         this.id = id;
+    }
+    public KbHttpRequest getKbHttpRequest() {
+        return this.kbHttpRequest;
+    }
+    
+    public void setKbHttpRequest(KbHttpRequest kbHttpRequest) {
+        this.kbHttpRequest = kbHttpRequest;
     }
     public Date getTs() {
         return this.ts;
@@ -51,11 +60,11 @@ public class KbDbOp  implements java.io.Serializable {
     public void setQuery(String query) {
         this.query = query;
     }
-    public Set getKbDbOpPartses() {
+    public Set<KbDbOpParts> getKbDbOpPartses() {
         return this.kbDbOpPartses;
     }
     
-    public void setKbDbOpPartses(Set kbDbOpPartses) {
+    public void setKbDbOpPartses(Set<KbDbOpParts> kbDbOpPartses) {
         this.kbDbOpPartses = kbDbOpPartses;
     }
 

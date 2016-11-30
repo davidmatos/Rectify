@@ -17,16 +17,14 @@
     </head>
     <body>
         <%
-            
+
             if (RectifyUtils.isNewInstance() || request.getParameterMap().containsKey("step")) {
 
         %>
         <jsp:include page="configuration/configuration.jsp" />
-        <%        } else {
-        %>
+        <%        } else {    %>
         <jsp:include page="dashboard/dashboard.jsp" />
-        <%        
-            }
+        <%            }
 
         %>
     </body>

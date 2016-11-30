@@ -22,4 +22,11 @@ public class RectifyUtils {
         return configurationValues.isEmpty();
     }
 
+    public static String getConfigurationEntry(String configurationName) {
+        Session hibSession = HibernateUtil.getSessionFactory().openSession();
+        String result = hibSession.createSQLQuery("SELECT configuration_value FROM configuration WHERE configuration_name = '" + configurationName + "'").list().get(0).toString();
+        
+        return result;
+    }
+
 }

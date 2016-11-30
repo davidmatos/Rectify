@@ -3,7 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Nov 29, 2016 11:21:05 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="pt.inesc.rectify.hibernate.LogHttpRequest" table="log_http_request" catalog="rectify">
+    <class name="pt.inesc.rectify.hibernate.LogDbOperation" table="log_db_operation" catalog="rectify">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity"></generator>
@@ -12,13 +12,13 @@
             <column name="ts" length="19" not-null="true" />
         </property>
         <property name="request" type="string">
-            <column name="request" length="10000" />
+            <column name="request" length="1024" />
         </property>
-        <set name="logHttpResponses" table="log_http_response" inverse="true" lazy="true" fetch="select">
+        <set name="logDbSubOperations" table="log_db_sub_operation" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="id_log_http_request" not-null="true" />
+                <column name="id_log_db_operation" />
             </key>
-            <one-to-many class="pt.inesc.rectify.hibernate.LogHttpResponse" />
+            <one-to-many class="pt.inesc.rectify.hibernate.LogDbSubOperation" />
         </set>
     </class>
 </hibernate-mapping>
