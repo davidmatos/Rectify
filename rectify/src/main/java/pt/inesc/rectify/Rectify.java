@@ -5,6 +5,7 @@
  */
 package pt.inesc.rectify;
 
+import org.slf4j.Logger;
 import pt.inesc.rectify.db.proxy.DBProxy;
 import pt.inesc.rectify.http.proxy.HTTPProxy;
 

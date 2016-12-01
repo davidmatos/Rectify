@@ -1,24 +1,23 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Nov 29, 2016 11:21:05 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="pt.inesc.rectify.hibernate.LogDbOperation" table="log_db_operation" catalog="rectify">
-        <id name="id" type="java.lang.Integer">
-            <column name="id" />
-            <generator class="identity"></generator>
-        </id>
-        <property name="ts" type="timestamp">
-            <column name="ts" length="19" not-null="true" />
-        </property>
-        <property name="request" type="string">
-            <column name="request" length="1024" />
-        </property>
-        <set name="logDbSubOperations" table="log_db_sub_operation" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_log_db_operation" />
-            </key>
-            <one-to-many class="pt.inesc.rectify.hibernate.LogDbSubOperation" />
-        </set>
-    </class>
+  <class catalog="rectify" name="pt.inesc.rectify.hibernate.LogDbOperation" optimistic-lock="version" table="log_db_operation">
+    <id name="id" type="java.lang.Integer">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="ts" type="timestamp">
+      <column length="19" name="ts" not-null="true"/>
+    </property>
+    <property name="request" type="string">
+      <column length="1024" name="request"/>
+    </property>
+    <set fetch="select" inverse="true" lazy="true" name="logDbSubOperations" table="log_db_sub_operation">
+      <key>
+        <column name="id_log_db_operation"/>
+      </key>
+      <one-to-many class="pt.inesc.rectify.hibernate.LogDbSubOperation"/>
+    </set>
+  </class>
 </hibernate-mapping>

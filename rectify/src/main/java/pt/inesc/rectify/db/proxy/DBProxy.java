@@ -3,6 +3,8 @@ package pt.inesc.rectify.db.proxy;
 import java.io.*;
 import java.net.*;
 import java.util.Arrays;
+import org.slf4j.Logger;
+import pt.inesc.rectify.RectifyLogger;
 
 /**
  *
@@ -31,9 +33,7 @@ public class DBProxy {
     }
 
     public void startProxy() throws Exception {
-
-        // Print a start-up message
-        System.out.println("Starting proxy for " + host + ":" + remotePort
+        RectifyLogger.info("Starting proxy for " + host + ":" + remotePort
                 + " on port " + localPort);
         server = new ServerSocket(localPort);
         while (true) {
@@ -106,11 +106,12 @@ class ThreadProxy extends Thread {
                             //TODO CREATE YOUR LOGIC HERE
                         }
                     } catch (IOException e) {
+                        RectifyLogger.error(e.getMessage());
                     }
                     try {
                         outToServer.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        RectifyLogger.error(e.getMessage());
                     }
                 }
             }.start();
@@ -123,7 +124,7 @@ class ThreadProxy extends Thread {
                     //TODO CREATE YOUR LOGIC HERE
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                RectifyLogger.error(e.getMessage());
             } finally {
                 try {
                     if (server != null) {
@@ -133,13 +134,13 @@ class ThreadProxy extends Thread {
                         client.close();
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    RectifyLogger.error(e.getMessage());
                 }
             }
             outToClient.close();
             sClient.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            RectifyLogger.error(e.getMessage());
         }
     }
 }

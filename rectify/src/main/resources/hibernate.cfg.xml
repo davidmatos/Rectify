@@ -43,45 +43,20 @@ Contributor(s):
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/rectify</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/rectify?useSSL=false</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">mysql</property>
-    <mapping resource="pt/inesc/rectify/LogHttpResponse.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/KbDbOpParts.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/LogHttpRequest.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/KbHttpResponse.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/KbHttpRequest.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/LogDbSubOperation.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/KbDbOp.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/KbHttpRequestParts.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/KbHttpResponseParts.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/RectifyLog.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/Configuration.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/LogDbOperation.hbm.xml"/>
-    <mapping/>
-    <mapping/>
-    <mapping resource="pt/inesc/rectify/Logs.hbm.xml"/>
-    <mapping/>
-    <mapping/>
-    <mapping/>
-    <mapping/>
-    <mapping/>
-    <mapping/>
-    <mapping/>
-    <mapping/>
-    <mapping/>
-    <mapping/>
-    <mapping resource="pt/inesc/rectify/hibernate/KbHttpRequest.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/hibernate/KbHttpResponse.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/hibernate/LogDbSubOperation.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/hibernate/Configuration.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/hibernate/RectifyLog.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/hibernate/KbHttpRequestParts.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/hibernate/LogHttpRequest.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/hibernate/KbHttpResponseParts.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/hibernate/KbDbOp.hbm.xml"/>
     <mapping resource="pt/inesc/rectify/hibernate/LogHttpResponse.hbm.xml"/>
     <mapping resource="pt/inesc/rectify/hibernate/KbDbOpParts.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/LogHttpRequest.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/KbHttpResponse.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/KbHttpRequest.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/LogDbSubOperation.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/KbDbOp.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/KbHttpRequestParts.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/KbHttpResponseParts.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/Configuration.hbm.xml"/>
     <mapping resource="pt/inesc/rectify/hibernate/LogDbOperation.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/Logs.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

@@ -7,6 +7,7 @@ package pt.inesc.rectify.hibernate;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
+import pt.inesc.rectify.RectifyLogger;
 
 /**
  * Hibernate Utility class with a convenient method to get Session Factory
@@ -25,7 +26,8 @@ public class HibernateUtil {
             sessionFactory = new Configuration().configure().buildSessionFactory();
         } catch (Throwable ex) {
             // Log the exception. 
-            System.err.println("Initial SessionFactory creation failed." + ex);
+            
+            RectifyLogger.error("Initial SessionFactory creation failed." + ex.getMessage());
             throw new ExceptionInInitializerError(ex);
         }
     }
