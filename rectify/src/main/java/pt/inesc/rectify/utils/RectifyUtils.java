@@ -8,6 +8,7 @@ package pt.inesc.rectify.utils;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import pt.inesc.rectify.hibernate.Configuration;
 
@@ -29,5 +30,20 @@ public class RectifyUtils {
         
         return result;
     }
+    
+    public static void updateConfigurationEntry(String configurationName, String configurationValue ) {
+        Session hibSession = HibernateUtil.getSessionFactory().openSession();
+        
+        Transaction transaction = hibSession.beginTransaction();
+        
+        Configuration configuration = (Configuration)hibSession.createQuery("FROM Configuration WHERE configurationName = :configurationName").setParameter("configurationName", configurationName).list().get(0);
+        	
+        configuration.setConfigurationValue(configurationValue);
+        
+        hibSession.update(configuration);
+        
+        transaction.commit();
+    }
+
 
 }
