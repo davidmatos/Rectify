@@ -18,21 +18,21 @@ import pt.inesc.rectify.utils.HibernateUtil;
  */
 public class RectifyLogger {
 
-	private static Session hibSession = HibernateUtil.getSessionFactory().openSession();
+	
 	
     public static void info(String msg) {
     	RectifyLog rectifyLog = new RectifyLog("INFO", msg, new Date(), "RectifyLogger");
-    	hibSession.save(rectifyLog);
+    	Rectify.hibSession.save(rectifyLog);
     }
 
     public static void error(String msg) {
     	RectifyLog rectifyLog = new RectifyLog("ERROR", msg, new Date(), "RectifyLogger");
-    	hibSession.save(rectifyLog);
+    	Rectify.hibSession.save(rectifyLog);
     }
 
     public static void warn(String msg) {
     	RectifyLog rectifyLog = new RectifyLog("WARNING", msg, new Date(), "RectifyLogger");
-    	hibSession.save(rectifyLog);
+    	Rectify.hibSession.save(rectifyLog);
     }
 
 }

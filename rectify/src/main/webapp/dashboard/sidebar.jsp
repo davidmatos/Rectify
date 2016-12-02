@@ -8,9 +8,7 @@
 <div class="col-md-2 sidebar">
     <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">HTTP Proxy</a></li>
         <li><a href="#">HTTP Log</a></li>
-        <li><a href="#">DB Proxy</a></li>
         <li><a href="#">DB Log</a></li>
         <li><a href="#">Knowledge Base</a></li>
     </ul>

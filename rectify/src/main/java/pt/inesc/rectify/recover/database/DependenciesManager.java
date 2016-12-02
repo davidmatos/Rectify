@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.utils.HibernateUtil;
 
 
@@ -40,9 +41,9 @@ public class DependenciesManager {
                 + "WHERE\n"
                 + "  `TABLE_SCHEMA` = SCHEMA()                -- Detect current schema in USE \n"
                 + "  AND `REFERENCED_TABLE_NAME` IS NOT NULL; ";
-        Session session = HibernateUtil.getSessionFactory().openSession();
         
-        List<String[]> results = session.createSQLQuery(query).list();
+        
+        List<String[]> results = Rectify.hibSession.createSQLQuery(query).list();
         for(String[] result : results){
             
             Relation relation = new Relation(result[0], result[1], result[2], result[3], result[4], result[5]);

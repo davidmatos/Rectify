@@ -7,9 +7,9 @@ package pt.inesc.rectify.utils;
 
 import java.util.List;
 
-import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.hibernate.Configuration;
 
 /**
@@ -19,28 +19,28 @@ import pt.inesc.rectify.hibernate.Configuration;
 public class RectifyUtils {
 
     public static boolean isNewInstance() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Configuration> configurationValues = session.createSQLQuery("SELECT * FROM configuration;").list();
+        
+        List<Configuration> configurationValues = Rectify.hibSession.createSQLQuery("SELECT * FROM configuration;").list();
         return configurationValues.isEmpty();
     }
 
     public static String getConfigurationEntry(String configurationName) {
-        Session hibSession = HibernateUtil.getSessionFactory().openSession();
-        String result = hibSession.createSQLQuery("SELECT configuration_value FROM configuration WHERE configuration_name = '" + configurationName + "'").list().get(0).toString();
+        
+        String result = Rectify.hibSession.createSQLQuery("SELECT configuration_value FROM configuration WHERE configuration_name = '" + configurationName + "'").list().get(0).toString();
         
         return result;
     }
     
     public static void updateConfigurationEntry(String configurationName, String configurationValue ) {
-        Session hibSession = HibernateUtil.getSessionFactory().openSession();
         
-        Transaction transaction = hibSession.beginTransaction();
         
-        Configuration configuration = (Configuration)hibSession.createQuery("FROM Configuration WHERE configurationName = :configurationName").setParameter("configurationName", configurationName).list().get(0);
+        Transaction transaction = Rectify.hibSession.beginTransaction();
+        
+        Configuration configuration = (Configuration)Rectify.hibSession.createQuery("FROM Configuration WHERE configurationName = :configurationName").setParameter("configurationName", configurationName).list().get(0);
         	
         configuration.setConfigurationValue(configurationValue);
         
-        hibSession.update(configuration);
+        Rectify.hibSession.update(configuration);
         
         transaction.commit();
     }

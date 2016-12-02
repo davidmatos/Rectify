@@ -164,7 +164,8 @@
 					<div class="form-group">
 						<div>
 							Trainning Mode: <input type="checkbox" data-toggle="toggle"
-								data-on="ON" data-off="OFF" id="trainning_mode" />
+								data-on="ON" data-off="OFF" id="trainning_mode"
+								<%=Rectify.isInTrainingMode() ? " checked " : ""%> />
 						</div>
 					</div>
 				</form>
@@ -192,9 +193,8 @@
 					</thead>
 					<tbody>
 						<%
-							Session hibSession = HibernateUtil.getSessionFactory().openSession();
-							List<RectifyLog> logs =  hibSession
-									.createQuery("FROM RectifyLog order by ts desc").setMaxResults(10).list();
+							List<RectifyLog> logs = Rectify.hibSession.createQuery("FROM RectifyLog order by ts desc").setMaxResults(10)
+									.list();
 							for (RectifyLog log : logs) {
 						%>
 						<tr
@@ -217,46 +217,22 @@
 	</div>
 </div>
 
+
 <script>
 	$(function() {
-		$('#http_proxy_running').change(
+		$('#trainning_mode').change(
 				function() {
-					if ($(this).prop('checked')) {
-						//start http proxy
-						var httpRemoteHost = $('#httpremotehost').val();
-						var httpRemotePort = $('#httpremoteport').val();
-						var httpLocalPort = $('#httplocalport').val();
-						$(location).attr(
-								'href',
-								'actions/start_http_proxy.jsp?return=/rectify&httpremotehost='
-										+ httpRemoteHost + '&httpremoteport='
-										+ httpRemotePort + '&httplocalport='
-										+ httpLocalPort);
-					} else {
-						//stopt http proxy
-						$(location).attr('href',
-								'actions/stop_http_proxy.jsp?return=/rectify');
-					}
-				})
 
-		$('#db_proxy_running').change(
-				function() {
+					var training_mode = 'OFF';
 					if ($(this).prop('checked')) {
-						//start db proxy
-						var dbRemoteHost = $('#dbremotehost').val();
-						var dbRemotePort = $('#dbremoteport').val();
-						var dbLocalPort = $('#dblocalport').val();
-						$(location).attr(
-								'href',
-								'actions/start_db_proxy.jsp?return=/rectify&dbremotehost='
-										+ dbRemoteHost + '&dbremoteport='
-										+ dbRemotePort + '&dblocalport='
-										+ dbLocalPort);
-					} else {
-						//stopt db proxy
-						$(location).attr('href',
-								'actions/stop_db_proxy.jsp?return=/rectify');
+						training_mode = 'ON';
 					}
+
+					$(location).attr(
+							'href',
+							'actions/set_training_mode.jsp?training_mode='
+									+ training_mode);
+
 				})
 
 	})

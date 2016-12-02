@@ -4,6 +4,7 @@
     Author     : david
 --%>
 
+<%@page import="pt.inesc.rectify.Rectify"%>
 <%@page import="pt.inesc.rectify.utils.HibernateUtil"%>
 <%@page import="java.util.List"%>
 <%@page import="org.hibernate.criterion.Restrictions"%>
@@ -18,13 +19,13 @@
 
 
 <%
-    Session hibernateSession = HibernateUtil.getSessionFactory().openSession();
-    Transaction transaction = hibernateSession.beginTransaction();
+    
+    Transaction transaction = Rectify.hibSession.beginTransaction();
 
     Map params = request.getParameterMap();
     Set<String> keys = params.keySet();
     for (String key : keys) {
-        Criteria cr = hibernateSession.createCriteria(Configuration.class);
+        Criteria cr = Rectify.hibSession.createCriteria(Configuration.class);
         cr.add(Restrictions.eq("configurationName", key));
         List results = cr.list();
         Configuration configuration = null;
@@ -34,7 +35,7 @@
             configuration = (Configuration) results.get(0);
         }
 
-        hibernateSession.save(configuration);
+        Rectify.hibSession.save(configuration);
         out.print(key + "=" + request.getParameter(key) + "<br>");
 
     }

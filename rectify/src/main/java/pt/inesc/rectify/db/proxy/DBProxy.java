@@ -3,8 +3,15 @@ package pt.inesc.rectify.db.proxy;
 import java.io.*;
 import java.net.*;
 import java.util.Arrays;
+import java.util.Date;
+
+import javax.print.DocFlavor.READER;
+
 import org.slf4j.Logger;
+
+import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.RectifyLogger;
+import pt.inesc.rectify.hibernate.KbDbOp;
 
 /**
  *
@@ -99,6 +106,21 @@ class ThreadProxy extends Thread {
                                 if (received[0] == 3 && received[1] == 115) {
                                     String query = new String(received);
                                     //System.out.println("Recebi:" + received[0] +"-" +received[1] +  new String(received));
+                                    
+                                    if (Rectify.isInTrainingMode()){
+                                    	//Training mode. Should store every request in the KB
+                                    	if (Rectify.currentKbHttpRequest != null){
+                                    		KbDbOp dbOp = new KbDbOp(Rectify.currentKbHttpRequest, new Date(), new String(received), null);
+                                        	Rectify.addCurrentKbDbOp(dbOp);	
+                                    	}
+                                    }else{
+                                    	//Normal mode. Should store every request in the DB Log
+                                    	
+                                    	
+                                    }
+                                    
+                                    
+                                    
                                 }
 
                             }

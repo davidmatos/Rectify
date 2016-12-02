@@ -50,3 +50,31 @@
 	</div>
 	<button type="submit" class="btn btn-default">Save Configuration</button>
 </form>
+
+
+
+
+<script>
+	$(function() {
+		$('#db_proxy_running').change(
+				function() {
+					if ($(this).prop('checked')) {
+						//start db proxy
+						var dbRemoteHost = $('#dbremotehost').val();
+						var dbRemotePort = $('#dbremoteport').val();
+						var dbLocalPort = $('#dblocalport').val();
+						$(location).attr(
+								'href',
+								'actions/start_db_proxy.jsp?return=/rectify&dbremotehost='
+										+ dbRemoteHost + '&dbremoteport='
+										+ dbRemotePort + '&dblocalport='
+										+ dbLocalPort);
+					} else {
+						//stopt db proxy
+						$(location).attr('href',
+								'actions/stop_db_proxy.jsp?return=/rectify');
+					}
+				})
+
+	})
+</script>
