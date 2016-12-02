@@ -6,23 +6,35 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                   
-                    <a class="navbar-brand" href="#">
-                        Rectify
-                    </a>
-                </div>
+<nav class="navbar navbar-default navbar-static-top">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
 
-               
-            </div><!-- /.container-fluid -->
-        </nav>
-        <div class="container-fluid main-container">
-            <jsp:include page="sidebar.jsp"/>
-            <div class="col-md-10 content">
-                <jsp:include page="main.jsp"/>
-            </div>
-            <jsp:include page="../includes/footer.jsp"/>
-        </div>
+			<a class="navbar-brand" href="#"> Rectify </a>
+		</div>
+
+
+	</div>
+	<!-- /.container-fluid -->
+</nav>
+<div class="container-fluid main-container">
+	<jsp:include page="sidebar.jsp" />
+	<div class="col-md-10 content">
+
+		<%
+			String p = "main";
+			if (request.getParameterMap().containsKey("p")) {
+				p = request.getParameter("p");
+			}
+			
+			p = p + ".jsp";
+		%>
+
+		<jsp:include page="<%= p %>" flush="true" />
+
+
+
+	</div>
+	<jsp:include page="../includes/footer.jsp" />
+</div>
