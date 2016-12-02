@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 1, 2016 10:02:07 PM by Hibernate Tools 5.2.0.Beta1 -->
+<hibernate-mapping>
+    <class name="pt.inesc.rectify.hibernate.KbDbOp" table="kb_db_op" catalog="rectify" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="kbHttpRequest" class="pt.inesc.rectify.hibernate.KbHttpRequest" fetch="select">
+            <column name="id_kb_http_request" />
+        </many-to-one>
+        <property name="ts" type="timestamp">
+            <column name="ts" length="19" not-null="true" />
+        </property>
+        <property name="query" type="string">
+            <column name="query" length="1024" />
+        </property>
+        <set name="kbDbOpPartses" table="kb_db_op_parts" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_kb_db_op" not-null="true" />
+            </key>
+            <one-to-many class="pt.inesc.rectify.hibernate.KbDbOpParts" />
+        </set>
+    </class>
+</hibernate-mapping>

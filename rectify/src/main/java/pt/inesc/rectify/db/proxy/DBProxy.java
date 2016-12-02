@@ -33,9 +33,11 @@ public class DBProxy {
     }
 
     public void startProxy() throws Exception {
-        RectifyLogger.info("Starting proxy for " + host + ":" + remotePort
-                + " on port " + localPort);
         server = new ServerSocket(localPort);
+        
+        RectifyLogger.info("DB Proxy for " + host + ":" + remotePort
+                + " started on port " + localPort);
+        
         while (true) {
             new ThreadProxy(server.accept(), host, remotePort);
         }

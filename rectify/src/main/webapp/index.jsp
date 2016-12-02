@@ -4,7 +4,8 @@
     Author     : david
 --%>
 
-<%@page import="pt.inesc.rectify.RectifyUtils"%>
+
+<%@page import="pt.inesc.rectify.utils.RectifyUtils"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 

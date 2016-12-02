@@ -2,9 +2,12 @@ package pt.inesc.rectify.recover.database;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.Session;
 
-import pt.inesc.rectify.hibernate.HibernateUtil;
+import pt.inesc.rectify.utils.HibernateUtil;
+
+
 
 
 

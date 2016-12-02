@@ -30,6 +30,7 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import pt.inesc.rectify.RectifyLogger;
 
 /**
  * Hello world!
@@ -37,114 +38,121 @@ import io.netty.handler.codec.http.HttpVersion;
  */
 public class HTTPProxy {
 
-    private String proxiedUrl = "https://pplware.sapo.pt";
-    private HttpProxyServer server;
-    
-    
-    Driver driver;
-    
-    public HTTPProxy(String proxiedUrl){
-        this.proxiedUrl = proxiedUrl;
-    }
-    
-    
-    public void startProxy(){
-           server
-                = DefaultHttpProxyServer.bootstrap()
-                        .withPort(8080)
-                        .withFiltersSource(new HttpFiltersSourceAdapter() {
-                            public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) {
-                                return new HttpFiltersAdapter(originalRequest) {
-                                    @Override
-                                    public HttpResponse clientToProxyRequest(HttpObject httpObject) {
+	private String proxiedUrl = "https://pplware.sapo.pt";
+	private int localPort;
+	private HttpProxyServer server;
 
-                                        originalRequest.setUri(proxiedUrl + originalRequest.getUri());
+	Driver driver;
 
-                                        System.out.println("Request to:" + originalRequest.getUri());
+	public HTTPProxy(String proxiedUrl, int remotePort, int localPort) {
+		this.proxiedUrl = proxiedUrl;
+		this.localPort = localPort;
+	}
 
-                                        URL obj = null;
-                                        try {
-                                            obj = new URL(originalRequest.getUri());
-                                        } catch (MalformedURLException e1) {
-                                            e1.printStackTrace();
-                                        }
+	public void startProxy() {
+		server = DefaultHttpProxyServer.bootstrap().withPort(localPort)
+				.withFiltersSource(new HttpFiltersSourceAdapter() {
+					public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) {
+						return new HttpFiltersAdapter(originalRequest) {
+							@Override
+							public HttpResponse clientToProxyRequest(HttpObject httpObject) {
 
-                                        HttpURLConnection con = null;
-                                        try {
-                                            con = (HttpURLConnection) obj.openConnection();
-                                        } catch (IOException e1) {
-                                            e1.printStackTrace();
-                                        }
+								originalRequest.setUri(proxiedUrl + originalRequest.getUri());
 
-                                        // optional default is GET
-                                        try {
-                                            con.setRequestMethod(originalRequest.getMethod().name());
-                                        } catch (ProtocolException e1) {
-                                            e1.printStackTrace();
-                                        }
+								System.out.println("Request to:" + originalRequest.getUri());
 
-                                        //add request header
-                                        //con.setRequestProperty("User-Agent", originalRequest.g);
-                                        int responseCode = 0;
-                                        try {
-                                            responseCode = con.getResponseCode();
-                                        } catch (IOException e1) {
-                                            e1.printStackTrace();
-                                        }
-                                        System.out.println("\nSending 'GET' request to URL : " + originalRequest.getUri());
-                                        System.out.println("Response Code : " + responseCode);
+								URL obj = null;
+								try {
+									obj = new URL(originalRequest.getUri());
+								} catch (MalformedURLException e1) {
+									// e1.printStackTrace();
+									RectifyLogger.error(e1.getMessage());
+								}
 
-                                        BufferedReader in = null;
-                                        try {
-                                            in = new BufferedReader(
-                                                    new InputStreamReader(con.getInputStream()));
-                                        } catch (IOException e1) {
-                                            e1.printStackTrace();
-                                        }
-                                        String inputLine;
-                                        StringBuffer response = new StringBuffer();
+								HttpURLConnection con = null;
+								try {
+									con = (HttpURLConnection) obj.openConnection();
+								} catch (IOException e1) {
+									// e1.printStackTrace();
+									RectifyLogger.error(e1.getMessage());
+								}
 
-                                        try {
-                                            while ((inputLine = in.readLine()) != null) {
-                                                response.append(inputLine);
-                                            }
-                                        } catch (IOException e1) {
-                                            e1.printStackTrace();
-                                        }
-                                        try {
-                                            in.close();
-                                        } catch (IOException e1) {
-                                            e1.printStackTrace();
-                                        }
+								// optional default is GET
+								try {
+									con.setRequestMethod(originalRequest.getMethod().name());
+								} catch (ProtocolException e1) {
+									// e1.printStackTrace();
+									RectifyLogger.error(e1.getMessage());
+								}
 
-                                        ByteBuf buffer = null;
-                                        try {
-                                            buffer = Unpooled.wrappedBuffer(response.toString().replaceAll(proxiedUrl, "localhost:8080").getBytes("UTF-8"));
-                                        } catch (UnsupportedEncodingException e) {
-                                            e.printStackTrace();
-                                        }
-                                        HttpResponse httpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buffer);
-                                        HttpHeaders.setContentLength(httpResponse, buffer.readableBytes());
-                                        HttpHeaders.setHeader(httpResponse, HttpHeaders.Names.CONTENT_TYPE, "text/html");
-                                        return httpResponse;
-                                    }
+								// add request header
+								// con.setRequestProperty("User-Agent",
+								// originalRequest.g);
+								int responseCode = 0;
+								try {
+									responseCode = con.getResponseCode();
+								} catch (IOException e1) {
+									// e1.printStackTrace();
+									RectifyLogger.error(e1.getMessage());
+								}
+								System.out.println("\nSending 'GET' request to URL : " + originalRequest.getUri());
+								System.out.println("Response Code : " + responseCode);
 
-                                    @Override
-                                    public HttpObject serverToProxyResponse(HttpObject httpObject) {
-                                        System.out.println(httpObject.toString());
-                                        return httpObject;
-                                    }
-                                };
-                            }
-                        })
-                        .start();
+								BufferedReader in = null;
+								try {
+									in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+								} catch (IOException e1) {
+									// e1.printStackTrace();
+									RectifyLogger.error(e1.getMessage());
+								}
+								String inputLine;
+								StringBuffer response = new StringBuffer();
 
-    }
-    
-    
-    public void stopProxy(){
-        server.stop();
-    }
-    
-      
+								try {
+									while ((inputLine = in.readLine()) != null) {
+										response.append(inputLine);
+									}
+								} catch (IOException e1) {
+									// e1.printStackTrace();
+									RectifyLogger.error(e1.getMessage());
+								}
+								try {
+									in.close();
+								} catch (IOException e1) {
+									// e1.printStackTrace();
+									RectifyLogger.error(e1.getMessage());
+								}
+
+								ByteBuf buffer = null;
+								try {
+									buffer = Unpooled.wrappedBuffer(response.toString()
+											.replaceAll(proxiedUrl, "localhost:8080").getBytes("UTF-8"));
+								} catch (UnsupportedEncodingException e) {
+									// e.printStackTrace();
+									RectifyLogger.error(e.getMessage());
+								}
+								HttpResponse httpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
+										HttpResponseStatus.OK, buffer);
+								HttpHeaders.setContentLength(httpResponse, buffer.readableBytes());
+								HttpHeaders.setHeader(httpResponse, HttpHeaders.Names.CONTENT_TYPE, "text/html");
+								return httpResponse;
+							}
+
+							@Override
+							public HttpObject serverToProxyResponse(HttpObject httpObject) {
+								System.out.println(httpObject.toString());
+								return httpObject;
+							}
+						};
+					}
+				}).start();
+
+		RectifyLogger.info("HTTP proxy successfuly started for " + this.proxiedUrl + " on port: " + this.localPort);
+
+	}
+
+	public void stopProxy() {
+		server.stop();
+	}
+
 }

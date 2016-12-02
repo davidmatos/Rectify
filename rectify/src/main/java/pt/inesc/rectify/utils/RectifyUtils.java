@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pt.inesc.rectify;
+package pt.inesc.rectify.utils;
 
 import java.util.List;
+
 import org.hibernate.Session;
+
 import pt.inesc.rectify.hibernate.Configuration;
-import pt.inesc.rectify.hibernate.HibernateUtil;
 
 /**
  *

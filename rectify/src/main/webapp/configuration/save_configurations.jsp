@@ -4,13 +4,14 @@
     Author     : david
 --%>
 
+<%@page import="pt.inesc.rectify.utils.HibernateUtil"%>
 <%@page import="java.util.List"%>
 <%@page import="org.hibernate.criterion.Restrictions"%>
 <%@page import="org.hibernate.Criteria"%>
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="pt.inesc.rectify.hibernate.Configuration"%>
 <%@page import="org.hibernate.Session"%>
-<%@page import="pt.inesc.rectify.hibernate.HibernateUtil"%>
+
 <%@page import="java.util.Set"%>
 <%@page import="java.util.Map"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
