@@ -10,7 +10,6 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Date;
 
-import org.hibernate.Transaction;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersAdapter;
 import org.littleshoot.proxy.HttpFiltersSourceAdapter;
@@ -38,7 +37,6 @@ import pt.inesc.rectify.RectifyLogger;
 import pt.inesc.rectify.hibernate.KbHttpRequest;
 import pt.inesc.rectify.hibernate.KbHttpResponse;
 import pt.inesc.rectify.hibernate.LogHttpRequest;
-import pt.inesc.rectify.hibernate.LogHttpResponse;
 
 /**
  * Hello world!
@@ -77,7 +75,6 @@ public class HTTPProxy {
 				public HttpResponse clientToProxyRequest(HttpObject httpObject) {
 
 					LogHttpRequest logHttpRequest = null;
-					LogHttpResponse logHttpResponse = null;
 
 					if (originalRequest.getUri().contains("favicon")) {
 						return null;
@@ -97,7 +94,7 @@ public class HTTPProxy {
 						// request in the DB Log
 
 						logHttpRequest = new LogHttpRequest(new Date(), originalRequest.toString(),
-								originalRequest.getUri(), null);
+								originalRequest.getUri());
 
 					}
 
@@ -188,12 +185,13 @@ public class HTTPProxy {
 						// Normal mode. Should store every
 						// request in the DB Log
 
-//						logHttpResponse = new LogHttpResponse(logHttpRequest, new Date(),
-//								httpResponse.headers().toString());
+
 //
+						
 //						Transaction t = Rectify.hibSession.beginTransaction();
-//						Rectify.hibSession.save(logHttpRequest);
-//						Rectify.hibSession.save(logHttpResponse);
+						Rectify.hibSession.save(logHttpRequest);
+
+						
 //						t.commit();
 
 					}
