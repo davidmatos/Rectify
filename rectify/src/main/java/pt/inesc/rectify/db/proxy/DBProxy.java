@@ -105,7 +105,7 @@ class ThreadProxy extends Thread {
                             if (bytes_read - 4 > 1) {
                                 if (received[0] == 3 && received[1] == 115) {
                                     String query = new String(received);
-                                    //System.out.println("Recebi:" + received[0] +"-" +received[1] +  new String(received));
+                                    System.out.println("Recebi:" + received[0] +"-" +received[1] +  new String(received));
                                     
                                     if (Rectify.isInTrainingMode()){
                                     	//Training mode. Should store every request in the KB
