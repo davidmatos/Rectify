@@ -149,30 +149,7 @@
 		</div>
 	</div>
 </div>
-<div class="row">
-	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">Knowledge Base</h3>
-			</div>
-			<div class="panel-body">
-				<form class="form-horizontal">
-					<div class="form-group">
-						<span class="label-primary">## Registered requests in the
-							Knowledge Base</span>
-					</div>
-					<div class="form-group">
-						<div>
-							Trainning Mode: <input type="checkbox" data-toggle="toggle"
-								data-on="ON" data-off="OFF" id="trainning_mode"
-								<%=Rectify.isInTrainingMode() ? " checked " : ""%> />
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+
 
 
 <div class="row">
@@ -193,14 +170,16 @@
 					</thead>
 					<tbody>
 						<%
-							List<RectifyLog> logs = Rectify.hibSession.createQuery("FROM RectifyLog order by ts desc").setMaxResults(10)
-									.list();
+							List<RectifyLog> logs = Rectify.hibSession.createQuery("FROM RectifyLog order by ts desc")
+									.setMaxResults(100).list();
 							for (RectifyLog log : logs) {
 						%>
 						<tr
 							class="<%=log.getLevel().equals("INFO")
 						? "success"
-						: log.getLevel().equals("WARNING") ? "warning" : "danger"%>">
+						: log.getLevel().equals("WARNING") ? "warning" : log.getLevel().equals("QUERY")
+								? "info"
+								: log.getLevel().equals("HTTP") ? "default" : "danger"%>">
 							<td><%=log.getTs()%></td>
 							<td><%=log.getLevel()%></td>
 							<td><%=log.getMessage()%></td>

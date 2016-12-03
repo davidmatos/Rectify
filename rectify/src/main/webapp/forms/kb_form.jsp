@@ -110,11 +110,14 @@
 
 
 
+				<%
+					if (Rectify.currentKbHttpRequest != null) {
+				%>
+
 				<!-- Multiple Checkboxes -->
 				<div class="form-group">
-					<label class="col-md-4 control-label" for="checkboxes">Multiple
-						Checkboxes</label>
-					<div class="col-md-4">
+					<label class="col-md-8 control-label" for="checkboxes"><%=Rectify.currentKbHttpRequest.getRequest()%></label>
+					<div class="col-md-8">
 
 						<%
 							for (KbDbOp op : Rectify.currentKbDbOps) {
@@ -132,19 +135,17 @@
 							}
 						%>
 
-
-
-
-						<!-- 						<div class="checkbox"> -->
-						<!-- 							<label for="checkboxes-1"> <input type="checkbox" -->
-						<!-- 								name="checkboxes" id="checkboxes-1" value="2"> Option -->
-						<!-- 								two -->
-						<!-- 							</label> -->
-						<!-- 						</div> -->
 					</div>
 				</div>
 
+				<%
+					} else {
+				%>
+				Didn't record any HTTP request.
 
+				<%
+					}
+				%>
 
 
 
@@ -157,8 +158,7 @@
 					<label class="col-md-4 control-label" for="button1id">Record</label>
 					<div class="col-md-8">
 						<button id="acceptLog" name="acceptLog" class="btn btn-success">Accept</button>
-						<button id="rejectLog" name="rejectLog"
-							class="btn btn-danger disabled">Reject</button>
+						<button id="rejectLog" name="rejectLog" class="btn btn-danger">Reject</button>
 					</div>
 				</div>
 			</div>
