@@ -1,8 +1,10 @@
+CREATE DATABASE  IF NOT EXISTS `rectify` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `rectify`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: rectify
 -- ------------------------------------------------------
--- Server version	5.5.53
+-- Server version	5.7.14
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -303,30 +305,29 @@ LOCK TABLES `log_http_response` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `logs`
+-- Table structure for table `rectify_log`
 --
 
-DROP TABLE IF EXISTS `logs`;
+DROP TABLE IF EXISTS `rectify_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `logs` (
-  `USER_ID` varchar(20) NOT NULL,
-  `DATED` date NOT NULL,
-  `LOGGER` varchar(50) NOT NULL,
-  `LEVEL` varchar(10) NOT NULL,
-  `MESSAGE` varchar(1000) NOT NULL,
+CREATE TABLE `rectify_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `level` varchar(50) DEFAULT NULL,
+  `message` varchar(1000) DEFAULT NULL,
+  `ts` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `title` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `logs`
+-- Dumping data for table `rectify_log`
 --
 
-LOCK TABLES `logs` WRITE;
-/*!40000 ALTER TABLE `logs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `logs` ENABLE KEYS */;
+LOCK TABLES `rectify_log` WRITE;
+/*!40000 ALTER TABLE `rectify_log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rectify_log` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -338,4 +339,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-30 12:45:12
+-- Dump completed on 2016-12-03 10:57:16
