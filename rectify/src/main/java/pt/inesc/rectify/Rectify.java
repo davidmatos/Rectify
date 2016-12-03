@@ -69,6 +69,7 @@ public class Rectify {
 		mode = MODE_TRAINING;
 		
 		Rectify.currentKbHttpRequest = null;
+		Rectify.currentKbHttpResponse = null;
 		Rectify.currentKbDbOps = new HashSet<>();
 		
 	}

@@ -1,5 +1,5 @@
 package pt.inesc.rectify.hibernate;
-// Generated Dec 1, 2016 10:02:07 PM by Hibernate Tools 5.2.0.Beta1
+// Generated Dec 3, 2016 4:22:13 PM by Hibernate Tools 5.2.0.Beta1
 
 import java.util.Date;
 
@@ -15,10 +15,6 @@ public class RectifyLog implements java.io.Serializable {
 	private String title;
 
 	public RectifyLog() {
-	}
-
-	public RectifyLog(Date ts) {
-		this.ts = ts;
 	}
 
 	public RectifyLog(String level, String message, Date ts, String title) {

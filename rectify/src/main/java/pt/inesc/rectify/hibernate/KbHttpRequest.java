@@ -1,5 +1,5 @@
 package pt.inesc.rectify.hibernate;
-// Generated Dec 1, 2016 10:02:07 PM by Hibernate Tools 5.2.0.Beta1
+// Generated Dec 3, 2016 4:22:13 PM by Hibernate Tools 5.2.0.Beta1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -13,6 +13,7 @@ public class KbHttpRequest implements java.io.Serializable {
 	private Integer id;
 	private Date ts;
 	private String request;
+	private String uri;
 	private Set<KbHttpRequestParts> kbHttpRequestPartses = new HashSet<KbHttpRequestParts>(0);
 	private Set<KbHttpResponse> kbHttpResponses = new HashSet<KbHttpResponse>(0);
 	private Set<KbDbOp> kbDbOps = new HashSet<KbDbOp>(0);
@@ -24,10 +25,11 @@ public class KbHttpRequest implements java.io.Serializable {
 		this.ts = ts;
 	}
 
-	public KbHttpRequest(Date ts, String request, Set<KbHttpRequestParts> kbHttpRequestPartses,
+	public KbHttpRequest(Date ts, String request, String uri, Set<KbHttpRequestParts> kbHttpRequestPartses,
 			Set<KbHttpResponse> kbHttpResponses, Set<KbDbOp> kbDbOps) {
 		this.ts = ts;
 		this.request = request;
+		this.uri = uri;
 		this.kbHttpRequestPartses = kbHttpRequestPartses;
 		this.kbHttpResponses = kbHttpResponses;
 		this.kbDbOps = kbDbOps;
@@ -55,6 +57,14 @@ public class KbHttpRequest implements java.io.Serializable {
 
 	public void setRequest(String request) {
 		this.request = request;
+	}
+
+	public String getUri() {
+		return this.uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	public Set<KbHttpRequestParts> getKbHttpRequestPartses() {

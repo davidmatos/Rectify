@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Dec 1, 2016 10:02:07 PM by Hibernate Tools 5.2.0.Beta1 -->
+<!-- Generated Dec 3, 2016 4:22:13 PM by Hibernate Tools 5.2.0.Beta1 -->
 <hibernate-mapping>
     <class name="pt.inesc.rectify.hibernate.KbHttpRequestParts" table="kb_http_request_parts" catalog="rectify" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">

@@ -98,72 +98,78 @@
 %>
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Modal Header</h4>
-			</div>
-			<div class="modal-body">
+	<div class="modal-dialog modal-lg">
+		<form method="post" action="/rectify/actions/save_kb_entry.jsp">
 
 
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Resume of the recorded HTTP request</h4>
+				</div>
+				<div class="modal-body">
 
-				<%
-					if (Rectify.currentKbHttpRequest != null) {
-				%>
 
-				<!-- Multiple Checkboxes -->
-				<div class="form-group">
-					<label class="col-md-8 control-label" for="checkboxes"><%=Rectify.currentKbHttpRequest.getRequest()%></label>
-					<div class="col-md-8">
 
-						<%
-							for (KbDbOp op : Rectify.currentKbDbOps) {
-						%>
+					<%
+						if (Rectify.currentKbHttpRequest != null) {
+					%>
 
-						<div class="checkbox">
-							<label for="checkboxes-1"> <input type="checkbox"
-								name="checkboxes" id="checkboxes-1" value="2"> <%=op.getQuery()%>
-							</label>
+					<!-- Multiple Checkboxes -->
+					<div class="form-group">
+						<label class="col-md-8 control-label" for="checkboxes"><%=Rectify.currentKbHttpRequest.getUri()%></label>
+						<div class="col-md-8">
+
+							<%
+								int i = 0;
+								for (KbDbOp op : Rectify.currentKbDbOps) {
+									i++;
+							%>
+
+							<div class="checkbox">
+								<label for="<%=i%>"> <input type="checkbox"
+									name="kbDbOps" value="<%=i%>" checked="checked">
+									<%=op.getQuery()%>
+								</label>
+							</div>
+
+
+
+							<%
+								}
+							%>
+
 						</div>
-
-
-
-						<%
-							}
-						%>
-
 					</div>
+
+					<%
+						} else {
+					%>
+					Didn't record any HTTP request.
+
+					<%
+						}
+					%>
+
+
+
+
+
 				</div>
-
-				<%
-					} else {
-				%>
-				Didn't record any HTTP request.
-
-				<%
-					}
-				%>
-
-
-
-
-
-			</div>
-			<div class="modal-footer">
-				<!-- Button (Double) -->
-				<div class="form-group">
-					<label class="col-md-4 control-label" for="button1id">Record</label>
-					<div class="col-md-8">
-						<button id="acceptLog" name="acceptLog" class="btn btn-success">Accept</button>
-						<button id="rejectLog" name="rejectLog" class="btn btn-danger">Reject</button>
+				<div class="modal-footer">
+					<!-- Button (Double) -->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="button1id">Record</label>
+						<div class="col-md-8">
+							<input type="submit" id="acceptLog" name="acceptLog"
+								class="btn btn-success" value="accept" /> <a
+								href="/rectify/actions/reject_kb_entry.jsp">Discard</a>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-
+		</form>
 	</div>
 </div>
 <script type="text/javascript">

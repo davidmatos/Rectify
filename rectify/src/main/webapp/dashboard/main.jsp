@@ -170,7 +170,8 @@
 					</thead>
 					<tbody>
 						<%
-							List<RectifyLog> logs = Rectify.hibSession.createQuery("FROM RectifyLog order by ts desc")
+							List<RectifyLog> logs = Rectify.hibSession.createQuery("FROM RectifyLog as rl  where rl.level <> ? and rl.level <> ? order by ts desc")
+							.setString(0, "QUERY").setString(1, "HTTP")
 									.setMaxResults(100).list();
 							for (RectifyLog log : logs) {
 						%>

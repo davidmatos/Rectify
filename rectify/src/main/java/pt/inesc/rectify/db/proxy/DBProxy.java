@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Date;
 
+import org.hibernate.Transaction;
+
 import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.RectifyLogger;
 import pt.inesc.rectify.hibernate.KbDbOp;
@@ -130,32 +132,39 @@ class ThreadProxy extends Thread {
 						while ((bytes_read = inFromClient.read(request)) != -1) {
 							if (bytes_read > 10) {
 
-								// String code = new String(new byte[] {
-								// request[0], request[1], request[2],
-								// request[3] });
-								// String code = request[0] + "," + request[1] +
-								// "," + request[2] + "," + request[3]
-								// + "," ;
-								byte[] received = Arrays.copyOfRange(request, 4, bytes_read);
+								byte[] received = Arrays.copyOfRange(request, 5, bytes_read);
 								String query = new String(received);
 
-								RectifyLogger.query(query);
+								// System.out.println("query1:" + query);
+								// System.out.println("["+request[4]+"]query2:"
+								// + new String(Arrays.copyOfRange(request, 5,
+								// bytes_read)));
 
-								if (Rectify.isInTrainingMode()) {
-									// Training mode. Should store every
-									// request in the KB
-									if (Rectify.currentKbHttpRequest != null) {
-										KbDbOp dbOp = new KbDbOp(Rectify.currentKbHttpRequest, new Date(), query, null);
-										Rectify.addCurrentKbDbOp(dbOp);
+								if (request[4] == 3) {
+
+									RectifyLogger.query(query);
+
+									if (Rectify.isInTrainingMode()) {
+										// Training mode. Should store every
+										// request in the KB
+										if (Rectify.currentKbHttpRequest != null) {
+											KbDbOp dbOp = new KbDbOp(Rectify.currentKbHttpRequest, new Date(), query,
+													null);
+											Rectify.addCurrentKbDbOp(dbOp);
+										}
+									} else {
+										// Normal mode. Should store every
+										// request in the DB Log
+//										KbDbOp dbOp = new KbDbOp(Rectify.currentKbHttpRequest, new Date(), query, null);
+//
+//										Rectify.hibSession.save(dbOp);
+
 									}
-								} else {
-									// Normal mode. Should store every
-									// request in the DB Log
 
 								}
 
 							}
-							outToServer.write(request, 0,	 bytes_read);
+							outToServer.write(request, 0, bytes_read);
 							outToServer.flush();
 							// TODO CREATE YOUR LOGIC HERE
 						}

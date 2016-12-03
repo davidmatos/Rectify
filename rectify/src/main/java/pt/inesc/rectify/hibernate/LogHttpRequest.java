@@ -1,5 +1,5 @@
 package pt.inesc.rectify.hibernate;
-// Generated Dec 1, 2016 10:02:07 PM by Hibernate Tools 5.2.0.Beta1
+// Generated Dec 3, 2016 4:22:13 PM by Hibernate Tools 5.2.0.Beta1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -13,6 +13,7 @@ public class LogHttpRequest implements java.io.Serializable {
 	private Integer id;
 	private Date ts;
 	private String request;
+	private String uri;
 	private Set<LogHttpResponse> logHttpResponses = new HashSet<LogHttpResponse>(0);
 
 	public LogHttpRequest() {
@@ -22,9 +23,10 @@ public class LogHttpRequest implements java.io.Serializable {
 		this.ts = ts;
 	}
 
-	public LogHttpRequest(Date ts, String request, Set<LogHttpResponse> logHttpResponses) {
+	public LogHttpRequest(Date ts, String request, String uri, Set<LogHttpResponse> logHttpResponses) {
 		this.ts = ts;
 		this.request = request;
+		this.uri = uri;
 		this.logHttpResponses = logHttpResponses;
 	}
 
@@ -50,6 +52,14 @@ public class LogHttpRequest implements java.io.Serializable {
 
 	public void setRequest(String request) {
 		this.request = request;
+	}
+
+	public String getUri() {
+		return this.uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	public Set<LogHttpResponse> getLogHttpResponses() {

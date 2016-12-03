@@ -10,6 +10,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Date;
 
+import org.hibernate.Transaction;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersAdapter;
 import org.littleshoot.proxy.HttpFiltersSourceAdapter;
@@ -36,6 +37,8 @@ import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.RectifyLogger;
 import pt.inesc.rectify.hibernate.KbHttpRequest;
 import pt.inesc.rectify.hibernate.KbHttpResponse;
+import pt.inesc.rectify.hibernate.LogHttpRequest;
+import pt.inesc.rectify.hibernate.LogHttpResponse;
 
 /**
  * Hello world!
@@ -73,38 +76,30 @@ public class HTTPProxy {
 				@Override
 				public HttpResponse clientToProxyRequest(HttpObject httpObject) {
 
-					if (originalRequest.getUri().contains("favicon")){
+					LogHttpRequest logHttpRequest = null;
+					LogHttpResponse logHttpResponse = null;
+
+					if (originalRequest.getUri().contains("favicon")) {
 						return null;
 					}
-					
+
 					originalRequest.setUri(remoteAddress + originalRequest.getUri());
-					
-					
-					
-					
 
 					if (Rectify.isInTrainingMode()) {
 						// Training mode. Should store every
 						// request in the KB
 						if (Rectify.currentKbHttpRequest == null) {
-							Rectify.currentKbHttpRequest = new KbHttpRequest(new Date(), originalRequest.toString(), null, null, null);
+							Rectify.currentKbHttpRequest = new KbHttpRequest(new Date(), originalRequest.toString(),
+									originalRequest.getUri(), null, null, null);
 						}
 					} else {
 						// Normal mode. Should store every
 						// request in the DB Log
 
+						logHttpRequest = new LogHttpRequest(new Date(), originalRequest.toString(),
+								originalRequest.getUri(), null);
+
 					}
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
 
 					URL obj = null;
 					try {
@@ -146,7 +141,7 @@ public class HTTPProxy {
 						in = new BufferedReader(isr);
 
 					} catch (IOException e1) {
-						//e1.printStackTrace();
+						// e1.printStackTrace();
 					}
 					String inputLine;
 					StringBuffer response = new StringBuffer();
@@ -179,40 +174,30 @@ public class HTTPProxy {
 
 					HttpHeaders.setHeader(httpResponse, HttpHeaders.Names.CONTENT_TYPE,
 							con.getHeaderField(HttpHeaders.Names.CONTENT_TYPE));
-					
-					
-					
-					
-					
-					
-					
-					
+
 					if (Rectify.isInTrainingMode()) {
 						// Training mode. Should store every
 						// request in the KB
 						if (Rectify.currentKbHttpRequest != null) {
-							Rectify.currentKbHttpRequest.setKbDbOps(Rectify.currentKbDbOps);
-							Rectify.currentKbHttpResponse = new KbHttpResponse(Rectify.currentKbHttpRequest, new Date()); 
-							
+							// Rectify.currentKbHttpRequest.setKbDbOps(Rectify.currentKbDbOps);
+							Rectify.currentKbHttpResponse = new KbHttpResponse(Rectify.currentKbHttpRequest,
+									new Date());
+
 						}
 					} else {
 						// Normal mode. Should store every
 						// request in the DB Log
 
+//						logHttpResponse = new LogHttpResponse(logHttpRequest, new Date(),
+//								httpResponse.headers().toString());
+//
+//						Transaction t = Rectify.hibSession.beginTransaction();
+//						Rectify.hibSession.save(logHttpRequest);
+//						Rectify.hibSession.save(logHttpResponse);
+//						t.commit();
+
 					}
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
+
 					return httpResponse;
 				}
 
