@@ -32,11 +32,11 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import pt.inesc.rectify.AsyncLogWriter;
 import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.RectifyLogger;
 import pt.inesc.rectify.hibernate.KbHttpRequest;
 import pt.inesc.rectify.hibernate.KbHttpResponse;
-import pt.inesc.rectify.hibernate.LogHttpRequest;
 
 /**
  * Hello world!
@@ -44,169 +44,164 @@ import pt.inesc.rectify.hibernate.LogHttpRequest;
  */
 public class HTTPProxy {
 
-	private String remoteAddress = "";
-	private HttpProxyServer server;
-	private int localPort;
+    private String remoteAddress = "";
+    private HttpProxyServer server;
+    private int localPort;
 
-	Driver driver;
+    Driver driver;
 
-	public HTTPProxy(String proxiedUrl, int localPort) {
-		this.remoteAddress = proxiedUrl;
-		this.localPort = localPort;
-	}
+    public HTTPProxy(String proxiedUrl, int localPort) {
+        this.remoteAddress = proxiedUrl;
+        this.localPort = localPort;
+    }
 
-	public void startProxy() {
-		server = DefaultHttpProxyServer.bootstrap().withPort(this.localPort).withFiltersSource(new RectifyHTTPFilter())
-				.start();
-		RectifyLogger.info("HTTP Proxy for " + this.remoteAddress + " started on port " + this.localPort);
+    public void startProxy() {
+        server = DefaultHttpProxyServer.bootstrap().withPort(this.localPort).withFiltersSource(new RectifyHTTPFilter())
+                .start();
+        RectifyLogger.info("HTTP Proxy for " + this.remoteAddress + " started on port " + this.localPort);
 
-	}
+    }
 
-	public void stopProxy() {
-		server.stop();
-	}
+    public void stopProxy() {
+        server.stop();
+    }
 
-	class RectifyHTTPFilter extends HttpFiltersSourceAdapter {
+    class RectifyHTTPFilter extends HttpFiltersSourceAdapter {
 
-		@Override
-		public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) {
-			return new HttpFiltersAdapter(originalRequest) {
-				@Override
-				public HttpResponse clientToProxyRequest(HttpObject httpObject) {
+        @Override
+        public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) {
+            return new HttpFiltersAdapter(originalRequest) {
+                @Override
+                public HttpResponse clientToProxyRequest(HttpObject httpObject) {
 
-					LogHttpRequest logHttpRequest = null;
+                    
+                    
+                    
+                    if (originalRequest.getUri().contains("favicon")) {
+                        return null;
+                    }
 
-					if (originalRequest.getUri().contains("favicon")) {
-						return null;
-					}
+//                    AsyncLogWriter.getInstance().addLogHttpRequest(originalRequest.toString(), originalRequest.getUri());
+                    
+                    
+                    
+                    
+                    originalRequest.setUri(remoteAddress + originalRequest.getUri());
 
-					originalRequest.setUri(remoteAddress + originalRequest.getUri());
+                    if (Rectify.isInTrainingMode()) {
+                        // Training mode. Should store every
+                        // request in the KB
+                        if (Rectify.currentKbHttpRequest == null) {
+                            Rectify.currentKbHttpRequest = new KbHttpRequest(new Date(), originalRequest.toString(),
+                                    originalRequest.getUri(), null, null, null);
+                        }
+                    } else {
+                        // Normal mode. Should store every
+                        // request in the DB Log
 
-					if (Rectify.isInTrainingMode()) {
-						// Training mode. Should store every
-						// request in the KB
-						if (Rectify.currentKbHttpRequest == null) {
-							Rectify.currentKbHttpRequest = new KbHttpRequest(new Date(), originalRequest.toString(),
-									originalRequest.getUri(), null, null, null);
-						}
-					} else {
-						// Normal mode. Should store every
-						// request in the DB Log
+                        AsyncLogWriter.getInstance().addLogHttpRequest(originalRequest.toString(),
+                                originalRequest.getUri());
 
-						logHttpRequest = new LogHttpRequest(new Date(), originalRequest.toString(),
-								originalRequest.getUri());
+                    }
 
-					}
+                    URL obj = null;
+                    try {
+                        obj = new URL(originalRequest.getUri());
+                    } catch (MalformedURLException e1) {
+                        e1.printStackTrace();
+                    }
 
-					URL obj = null;
-					try {
-						obj = new URL(originalRequest.getUri());
-					} catch (MalformedURLException e1) {
-						e1.printStackTrace();
-					}
+                    HttpURLConnection con = null;
+                    try {
+                        con = (HttpURLConnection) obj.openConnection();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
 
-					HttpURLConnection con = null;
-					try {
-						con = (HttpURLConnection) obj.openConnection();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+                    // optional default is GET
+                    try {
+                        con.setRequestMethod(originalRequest.getMethod().name());
+                    } catch (ProtocolException e1) {
+                        e1.printStackTrace();
+                    }
 
-					// optional default is GET
-					try {
-						con.setRequestMethod(originalRequest.getMethod().name());
-					} catch (ProtocolException e1) {
-						e1.printStackTrace();
-					}
+                    // add request header
+                    // con.setRequestProperty("User-Agent", originalRequest.g);
+                    int responseCode = 0;
+                    try {
+                        responseCode = con.getResponseCode();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    // System.out.println("\nSending 'GET' request to URL : " +
+                    // originalRequest.getUri());
+//                    RectifyLogger.info(originalRequest.getUri());
+                    BufferedReader in = null;
+                    InputStreamReader isr = null;
+                    try {
+                        isr = new InputStreamReader(con.getInputStream());
 
-					// add request header
-					// con.setRequestProperty("User-Agent", originalRequest.g);
-					int responseCode = 0;
-					try {
-						responseCode = con.getResponseCode();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-					// System.out.println("\nSending 'GET' request to URL : " +
-					// originalRequest.getUri());
-					RectifyLogger.http(originalRequest.getUri());
-					BufferedReader in = null;
-					InputStreamReader isr = null;
-					try {
-						isr = new InputStreamReader(con.getInputStream());
+                        in = new BufferedReader(isr);
 
-						in = new BufferedReader(isr);
+                    } catch (IOException e1) {
+                        // e1.printStackTrace();
+                    }
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
 
-					} catch (IOException e1) {
-						// e1.printStackTrace();
-					}
-					String inputLine;
-					StringBuffer response = new StringBuffer();
+                    try {
+                        while ((inputLine = in.readLine()) != null) {
+                            response.append(inputLine);
+                        }
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    try {
+                        in.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
 
-					try {
-						while ((inputLine = in.readLine()) != null) {
-							response.append(inputLine);
-						}
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-					try {
-						in.close();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+                    ByteBuf buffer = null;
+                    try {
+                        buffer = Unpooled.wrappedBuffer(response.toString()
+                                .replaceAll(remoteAddress, "http://localhost:" + localPort).getBytes("UTF-8"));
+                        // buffer = Unpooled.wrappedBuffer( response.);
 
-					ByteBuf buffer = null;
-					try {
-						buffer = Unpooled.wrappedBuffer(response.toString()
-								.replaceAll(remoteAddress, "http://localhost:" + localPort).getBytes("UTF-8"));
-						// buffer = Unpooled.wrappedBuffer( response.);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    HttpResponse httpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
+                            buffer);
+                    HttpHeaders.setContentLength(httpResponse, buffer.readableBytes());
 
-					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
-					}
-					HttpResponse httpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
-							buffer);
-					HttpHeaders.setContentLength(httpResponse, buffer.readableBytes());
+                    HttpHeaders.setHeader(httpResponse, HttpHeaders.Names.CONTENT_TYPE,
+                            con.getHeaderField(HttpHeaders.Names.CONTENT_TYPE));
 
-					HttpHeaders.setHeader(httpResponse, HttpHeaders.Names.CONTENT_TYPE,
-							con.getHeaderField(HttpHeaders.Names.CONTENT_TYPE));
+                    if (Rectify.isInTrainingMode()) {
+                        // Training mode. Should store every
+                        // request in the KB
+                        if (Rectify.currentKbHttpRequest != null) {
+                            // Rectify.currentKbHttpRequest.setKbDbOps(Rectify.currentKbDbOps);
+                            Rectify.currentKbHttpResponse = new KbHttpResponse(Rectify.currentKbHttpRequest,
+                                    new Date());
 
-					if (Rectify.isInTrainingMode()) {
-						// Training mode. Should store every
-						// request in the KB
-						if (Rectify.currentKbHttpRequest != null) {
-							// Rectify.currentKbHttpRequest.setKbDbOps(Rectify.currentKbDbOps);
-							Rectify.currentKbHttpResponse = new KbHttpResponse(Rectify.currentKbHttpRequest,
-									new Date());
+                        }
+                    } else {
+                        AsyncLogWriter.getInstance().addLogHttpRequest(originalRequest.toString(),
+                                originalRequest.getUri());
+                    }
 
-						}
-					} else {
-						// Normal mode. Should store every
-						// request in the DB Log
+                    return httpResponse;
+                }
 
+                @Override
+                public HttpObject serverToProxyResponse(HttpObject httpObject) {
+                    return httpObject;
+                }
+            };
+        }
 
-//
-						
-//						Transaction t = Rectify.hibSession.beginTransaction();
-						Rectify.hibSession.save(logHttpRequest);
-
-						
-//						t.commit();
-
-					}
-
-					return httpResponse;
-				}
-
-				@Override
-				public HttpObject serverToProxyResponse(HttpObject httpObject) {
-					System.out.println(httpObject.toString());
-					return httpObject;
-				}
-			};
-		}
-
-	}
+    }
 
 }

@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Date;
 
-import org.hibernate.Transaction;
+import pt.inesc.rectify.AsyncLogWriter;
 
 import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.RectifyLogger;
@@ -135,14 +135,14 @@ class ThreadProxy extends Thread {
 								byte[] received = Arrays.copyOfRange(request, 5, bytes_read);
 								String query = new String(received);
 
-								// System.out.println("query1:" + query);
-								// System.out.println("["+request[4]+"]query2:"
-								// + new String(Arrays.copyOfRange(request, 5,
-								// bytes_read)));
+//								 System.out.println("query1:" + query);
+//								 System.out.println("["+request[4]+"]query2:"
+//								 + new String(Arrays.copyOfRange(request, 5,
+//								 bytes_read)));
 
 								if (request[4] == 3) {
 
-									RectifyLogger.query(query);
+//									RectifyLogger.info(query);
 
 									if (Rectify.isInTrainingMode()) {
 										// Training mode. Should store every
@@ -155,10 +155,7 @@ class ThreadProxy extends Thread {
 									} else {
 										// Normal mode. Should store every
 										// request in the DB Log
-//										KbDbOp dbOp = new KbDbOp(Rectify.currentKbHttpRequest, new Date(), query, null);
-//
-//										Rectify.hibSession.save(dbOp);
-
+										AsyncLogWriter.getInstance().addLogDbOperation(query);
 									}
 
 								}

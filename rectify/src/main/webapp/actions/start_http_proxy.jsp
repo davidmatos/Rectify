@@ -16,7 +16,7 @@
 
     String httpRemoteAddress = request.getParameter("httpremotehost").toString();
 
-    int httpRemotePort = Integer.parseInt(request.getParameter("httpremoteport").toString());
+    //int httpRemotePort = Integer.parseInt(request.getParameter("httpremoteport").toString());
     int httpLocalPort = Integer.parseInt(request.getParameter("httplocalport").toString());
 
     Rectify.httpProxy = new HTTPProxy(httpRemoteAddress, httpLocalPort);

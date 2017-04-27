@@ -5,12 +5,10 @@
  */
 package pt.inesc.rectify;
 
-import java.util.Date;
 
-import org.hibernate.Session;
+import java.util.logging.Logger;
 
-import pt.inesc.rectify.hibernate.RectifyLog;
-import pt.inesc.rectify.utils.HibernateUtil;
+
 
 /**
  *
@@ -18,52 +16,28 @@ import pt.inesc.rectify.utils.HibernateUtil;
  */
 public class RectifyLogger {
 
-	public static void info(String msg) {
-		if (msg.length() > 1000) {
-			divideInfo(msg);
-		} else {
-			RectifyLog rectifyLog = new RectifyLog("INFO", msg, new Date(), "RectifyLogger");
-			Rectify.hibSession.save(rectifyLog);
-		}
+    private static final String LOGGER_NAME = "Rectify";
+    private static Logger logger = null;
 
-	}
+    public static void info(String msg) {
+        getLogger().info(msg);
+    }
 
-	public static void error(String msg) {
-		RectifyLog rectifyLog = new RectifyLog("ERROR", msg, new Date(), "RectifyLogger");
-		Rectify.hibSession.save(rectifyLog);
-	}
+    public static void error(String msg) {
+        getLogger().severe(msg);
+    }
 
-	public static void warn(String msg) {
-		RectifyLog rectifyLog = new RectifyLog("WARNING", msg, new Date(), "RectifyLogger");
-		Rectify.hibSession.save(rectifyLog);
-	}
+    public static void warn(String msg) {
+        getLogger().warning(msg);
 
-	private static void divideInfo(String msg) {
-		do {
-			String msgPart = msg.substring(0, 999);
-			msg = msg.substring(999);
-			RectifyLog rectifyLog = new RectifyLog("INFO", msgPart, new Date(), "RectifyLogger");
-			Rectify.hibSession.save(rectifyLog);
-		} while (msg.length() > 1000);
-		RectifyLog rectifyLog = new RectifyLog("INFO", msg, new Date(), "RectifyLogger");
-		Rectify.hibSession.save(rectifyLog);
-	}
+    }
 
-	public static void query(String msg) {
-		if (msg.length() > 1000) {
-			divideInfo(msg);
-		} else {
-			RectifyLog rectifyLog = new RectifyLog("QUERY", msg, new Date(), "RectifyLogger");
-			Rectify.hibSession.save(rectifyLog);
-		}
-
-	}
-
-	public static void http(String msg) {
-
-		RectifyLog rectifyLog = new RectifyLog("HTTP", msg, new Date(), "RectifyLogger");
-		Rectify.hibSession.save(rectifyLog);
-
-	}
+    private static Logger getLogger() {
+        if (logger == null) {
+            logger = Logger.getLogger(LOGGER_NAME);
+            
+        }
+        return logger;
+    }
 
 }
