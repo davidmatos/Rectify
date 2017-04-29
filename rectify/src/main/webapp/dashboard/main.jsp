@@ -4,6 +4,9 @@
     Author     : david
 --%>
 
+<%@page import="pt.inesc.rectify.hibernate.LogDbStatement"%>
+<%@page import="pt.inesc.rectify.hibernate.LogHttpRequest"%>
+<%@page import="org.hibernate.Query"%>
 <%@page import="pt.inesc.rectify.hibernate.RectifyLog"%>
 <%@page import="java.util.List"%>
 <%@page import="org.hibernate.Session"%>
@@ -15,205 +18,214 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+
+
 <div class="row">
-	<div class="col-md-6">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">HTTP Proxy</h3>
-			</div>
-			<div class="panel-body">
-				<jsp:include page="../forms/http_form.jsp" />
-			</div>
-		</div>
-	</div>
-	<div class="col-md-6">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">HTTP Log</h3>
-			</div>
-			<div class="panel-body">
-				<div>
-					<div class="form-group pull-right">
-						<input type="text" class="search form-control"
-							placeholder="Search request..." />
-					</div>
-					<span class="counter pull-right"></span>
-					<table class="table table-hover table-bordered results">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th class="col-md-5 col-xs-4">Endpoint</th>
-								<th class="col-md-4 col-xs-3">Host</th>
-								<th class="col-md-3 col-xs-5">TimeStamp</th>
-							</tr>
-							<tr class="warning no-result">
-								<td colspan="4"><i class="fa fa-warning"></i>No result</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">1</th>
-								<td>www.ist.pt</td>
-								<td>192.168.2.4</td>
-								<td>10/2/2015 15:35:35.0</td>
-							</tr>
-							<tr>
-								<th scope="row">2</th>
-								<td>www.ist.pt</td>
-								<td>192.168.2.4</td>
-								<td>10/2/2015 15:35:35.0</td>
-							</tr>
-							<tr>
-								<th scope="row">3</th>
-								<td>www.ist.pt</td>
-								<td>192.168.2.4</td>
-								<td>10/2/2015 15:35:35.0</td>
-							</tr>
-							<tr>
-								<th scope="row">4</th>
-								<td>www.ist.pt</td>
-								<td>192.168.2.4</td>
-								<td>10/2/2015 15:35:35.0</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-6">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">DB Proxy</h3>
-			</div>
-			<div class="panel-body">
-				<jsp:include page="../forms/db_form.jsp" />
-			</div>
-		</div>
-	</div>
-	<div class="col-md-6">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">DB Log</h3>
-			</div>
-			<div class="panel-body">
-				<div>
-					<div class="form-group pull-right">
-						<input type="text" class="search form-control"
-							placeholder="Search query..." />
-					</div>
-					<span class="counter pull-right"></span>
-					<table class="table table-hover table-bordered results">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th class="col-md-5 col-xs-4">Query Type</th>
-								<th class="col-md-4 col-xs-3">Affected Table</th>
-								<th class="col-md-3 col-xs-5">TimeStamp</th>
-							</tr>
-							<tr class="warning no-result">
-								<td colspan="4"><i class="fa fa-warning"></i>No result</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">1</th>
-								<td>INSERT</td>
-								<td>users</td>
-								<td>10/2/2015 15:35:35.0</td>
-							</tr>
-							<tr>
-								<th scope="row">2</th>
-								<td>INSERT</td>
-								<td>users</td>
-								<td>10/2/2015 15:35:35.0</td>
-							</tr>
-							<tr>
-								<th scope="row">3</th>
-								<td>INSERT</td>
-								<td>users</td>
-								<td>10/2/2015 15:35:35.0</td>
-							</tr>
-							<tr>
-								<th scope="row">4</th>
-								<td>UPDATE</td>
-								<td>users</td>
-								<td>10/2/2015 15:35:35.0</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">HTTP Proxy</h3>
+            </div>
+            <div class="panel-body">
+                <jsp:include page="../forms/http_form.jsp" />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">HTTP Log</h3>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <div class="form-group pull-right">
+                        <input type="text" class="search form-control"
+                               placeholder="Search request..." />
+                    </div>
+                    <span class="counter pull-right"></span>
+                    <table class="table table-hover table-bordered results">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="col-md-5 col-xs-4">URI</th>
+                                <th class="col-md-4 col-xs-3">Host</th>
+                                <th class="col-md-3 col-xs-5">TimeStamp</th>
+                            </tr>
+                            <tr class="warning no-result">
+                                <td colspan="4"><i class="fa fa-warning"></i>No result</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                Query query = Rectify.getInstance().getHibSession().createQuery("from LogHttpRequest order by id desc");
+                                query.setMaxResults(5);
+                                List<LogHttpRequest> httpRequests = query.list();
+
+                                String hostName = "";
+                                if (Rectify.getInstance().getHttpProxy() != null) {
+                                    hostName = Rectify.getInstance().getHttpProxy().getRemoteAddress();
+                                }
+
+                                for (LogHttpRequest httpRequest : httpRequests) {
+                                    String uri = httpRequest.getUri().replaceAll(hostName, "");
+                                    if (uri.length() > 25) {
+                                        uri =  "..." + uri.substring(uri.length()-25, uri.length());
+                                    }
+                            %>
+                            <tr>
+                                <th scope="row"><%= httpRequest.getId()%></th>
+                                <td><%= uri%></td>
+                                <td>TODO</td>
+                                <td><%= httpRequest.getTs()%></td>
+                            </tr>
+                            <%
+                                }
+
+                            %>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 
+
 <div class="row">
-	<div class="col-md-12">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">Rectify Log</h3>
-			</div>
-			<div class="panel-body">
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">DB Proxy</h3>
+            </div>
+            <div class="panel-body">
+                <jsp:include page="../forms/db_form.jsp" />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">DB Log</h3>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <div class="form-group pull-right">
+                        <input type="text" class="search form-control"
+                               placeholder="Search query..." />
+                    </div>
+                    <span class="counter pull-right"></span>
+                    <table class="table table-hover table-bordered results">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="col-md-5 col-xs-4">Query Type</th>
+                                <th class="col-md-4 col-xs-3">Affected Table</th>
+                                <th class="col-md-3 col-xs-5">TimeStamp</th>
+                            </tr>
+                            <tr class="warning no-result">
+                                <td colspan="4"><i class="fa fa-warning"></i>No result</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          
+                            
+                            <%
+                                query = Rectify.getInstance().getHibSession().createQuery("from LogDbStatement order by id desc");
+                                query.setMaxResults(5);
+                                List<LogDbStatement> dbStatements = query.list();
 
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Timestamp</th>
-							<th>Level</th>
-							<th>Message</th>
-						</tr>
-					</thead>
-					<tbody>
-						<%
-							List<RectifyLog> logs = Rectify.hibSession.createQuery("FROM RectifyLog as rl  where rl.level <> ? and rl.level <> ? order by ts desc")
-							.setString(0, "QUERY").setString(1, "HTTP")
-									.setMaxResults(100).list();
-							for (RectifyLog log : logs) {
-						%>
-						<tr
-							class="<%=log.getLevel().equals("INFO")
-						? "success"
-						: log.getLevel().equals("WARNING") ? "warning" : log.getLevel().equals("QUERY")
-								? "info"
-								: log.getLevel().equals("HTTP") ? "default" : "danger"%>">
-							<td><%=log.getTs()%></td>
-							<td><%=log.getLevel()%></td>
-							<td><%=log.getMessage()%></td>
-						</tr>
-						<%
-							}
-						%>
+                                
+                               
+                                for (LogDbStatement logDbStatment : dbStatements) {
+                                    String q = logDbStatment.getRequest();
+                                    if (q.length() > 25) {
+                                        q =  "..." + q.substring(q.length()-25, q.length());
+                                    }
+                            %>
+                            <tr>
+                                <th scope="row"><%= logDbStatment.getId()%></th>
+                                <td><%= q%></td>
+                                <td>TODO</td>
+                                <td><%= logDbStatment.getTs()%></td>
+                            </tr>
+                            <%
+                                }
 
-					</tbody>
-				</table>
+                            %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-			</div>
-		</div>
-	</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Rectify Log</h3>
+            </div>
+            <div class="panel-body">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Level</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%                                                    List<RectifyLog> logs = Rectify.getInstance().getHibSession().createQuery("FROM RectifyLog as rl  where rl.level <> ? and rl.level <> ? order by ts desc")
+                                    .setString(0, "QUERY").setString(1, "HTTP")
+                                    .setMaxResults(100).list();
+                            for (RectifyLog log : logs) {
+                        %>
+                        <tr
+                            class="<%=log.getLevel().equals("INFO")
+                                    ? "success"
+                                    : log.getLevel().equals("WARNING") ? "warning" : log.getLevel().equals("QUERY")
+                                    ? "info"
+                                    : log.getLevel().equals("HTTP") ? "default" : "danger"%>">
+                            <td><%=log.getTs()%></td>
+                            <td><%=log.getLevel()%></td>
+                            <td><%=log.getMessage()%></td>
+                        </tr>
+                        <%
+                            }
+                        %>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
 </div>
 
 
 <script>
-	$(function() {
-		$('#trainning_mode').change(
-				function() {
+    $(function () {
+        $('#trainning_mode').change(
+                function () {
 
-					var training_mode = 'OFF';
-					if ($(this).prop('checked')) {
-						training_mode = 'ON';
-					}
+                    var training_mode = 'OFF';
+                    if ($(this).prop('checked')) {
+                        training_mode = 'ON';
+                    }
 
-					$(location).attr(
-							'href',
-							'actions/set_training_mode.jsp?training_mode='
-									+ training_mode);
+                    $(location).attr(
+                            'href',
+                            'actions/set_training_mode.jsp?training_mode='
+                            + training_mode);
 
-				})
+                })
 
-	})
+    })
 </script>

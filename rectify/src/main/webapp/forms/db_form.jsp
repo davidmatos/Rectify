@@ -11,7 +11,7 @@
 		</div>
 		<div class="col-sm-8">
 			<input type="checkbox" data-toggle="toggle" data-on="Enabled"
-				data-off="Disabled" <%=Rectify.dbProxy != null ? "checked" : ""%>
+                               data-off="Disabled" <%=Rectify.getInstance().getDbProxy() != null ? "checked" : ""%>
 				id="db_proxy_running" />
 		</div>
 	</div>
@@ -21,7 +21,7 @@
 		</div>
 		<div class="col-sm-8">
 			<input type="text" class="form-control" id="dbremotehost"
-				<%=Rectify.dbProxy != null ? "disabled" : ""%>
+                               <%=Rectify.getInstance().getDbProxy() != null ? "disabled" : ""%>
 				value="<%=RectifyUtils.getConfigurationEntry(RectifyConstants.CFG_DB_REMOTE_HOST)%>" 
 				name="<%= RectifyConstants.CFG_DB_REMOTE_HOST %>"/>
 		</div>
@@ -32,7 +32,7 @@
 		</div>
 		<div class="col-sm-8">
 			<input type="number" class="form-control" id="dbremoteport"
-				<%=Rectify.dbProxy != null ? "disabled" : ""%>
+                               <%=Rectify.getInstance().getDbProxy() != null ? "disabled" : ""%>
 				value="<%=RectifyUtils.getConfigurationEntry(RectifyConstants.CFG_DB_REMOTE_PORT)%>" 
 				name="<%= RectifyConstants.CFG_DB_REMOTE_PORT %>"/>
 		</div>
@@ -43,7 +43,7 @@
 		</div>
 		<div class="col-sm-8">
 			<input type="number" class="form-control" id="dblocalport"
-				<%=Rectify.dbProxy != null ? "disabled" : ""%>
+				<%=Rectify.getInstance().getDbProxy() != null ? "disabled" : ""%>
 				value="<%=RectifyUtils.getConfigurationEntry(RectifyConstants.CFG_DB_LOCAL_PORT)%>" 
 				name="<%= RectifyConstants.CFG_DB_LOCAL_PORT %>"/>
 		</div>

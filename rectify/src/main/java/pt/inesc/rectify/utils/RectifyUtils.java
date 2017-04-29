@@ -20,13 +20,13 @@ public class RectifyUtils {
 
     public static boolean isNewInstance() {
         
-        List<Configuration> configurationValues = Rectify.hibSession.createSQLQuery("SELECT * FROM configuration;").list();
+        List<Configuration> configurationValues = Rectify.getInstance().getHibSession().createSQLQuery("SELECT * FROM configuration;").list();
         return configurationValues.isEmpty();
     }
 
     public static String getConfigurationEntry(String configurationName) {
         
-        String result = Rectify.hibSession.createSQLQuery("SELECT configuration_value FROM configuration WHERE configuration_name = '" + configurationName + "'").list().get(0).toString();
+        String result = Rectify.getInstance().getHibSession().createSQLQuery("SELECT configuration_value FROM configuration WHERE configuration_name = '" + configurationName + "'").list().get(0).toString();
         
         return result;
     }
@@ -34,13 +34,13 @@ public class RectifyUtils {
     public static void updateConfigurationEntry(String configurationName, String configurationValue ) {
         
         
-        Transaction transaction = Rectify.hibSession.beginTransaction();
+        Transaction transaction = Rectify.getInstance().getHibSession().beginTransaction();
         
-        Configuration configuration = (Configuration)Rectify.hibSession.createQuery("FROM Configuration WHERE configurationName = :configurationName").setParameter("configurationName", configurationName).list().get(0);
+        Configuration configuration = (Configuration)Rectify.getInstance().getHibSession().createQuery("FROM Configuration WHERE configurationName = :configurationName").setParameter("configurationName", configurationName).list().get(0);
         	
         configuration.setConfigurationValue(configurationValue);
         
-        Rectify.hibSession.update(configuration);
+        Rectify.getInstance().getHibSession().update(configuration);
         
         transaction.commit();
     }

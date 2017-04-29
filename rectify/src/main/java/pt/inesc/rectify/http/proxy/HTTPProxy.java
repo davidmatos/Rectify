@@ -20,7 +20,6 @@ import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
  *
  * @author David Matos
  */
-import com.mysql.jdbc.Driver;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -32,6 +31,8 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import java.util.HashSet;
+import java.util.Set;
 import pt.inesc.rectify.AsyncLogWriter;
 import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.RectifyLogger;
@@ -48,7 +49,7 @@ public class HTTPProxy {
     private HttpProxyServer server;
     private int localPort;
 
-    Driver driver;
+
 
     public HTTPProxy(String proxiedUrl, int localPort) {
         this.remoteAddress = proxiedUrl;
@@ -74,26 +75,20 @@ public class HTTPProxy {
                 @Override
                 public HttpResponse clientToProxyRequest(HttpObject httpObject) {
 
-                    
-                    
-                    
                     if (originalRequest.getUri().contains("favicon")) {
                         return null;
                     }
 
 //                    AsyncLogWriter.getInstance().addLogHttpRequest(originalRequest.toString(), originalRequest.getUri());
-                    
-                    
-                    
-                    
                     originalRequest.setUri(remoteAddress + originalRequest.getUri());
 
-                    if (Rectify.isInTrainingMode()) {
+                    if (Rectify.getInstance().isInTrainingMode()) {
                         // Training mode. Should store every
                         // request in the KB
-                        if (Rectify.currentKbHttpRequest == null) {
-                            Rectify.currentKbHttpRequest = new KbHttpRequest(new Date(), originalRequest.toString(),
-                                    originalRequest.getUri(), null, null, null);
+                        if (Rectify.getInstance().getCurrentKbHttpRequest() == null) {
+                            Rectify.getInstance().setCurrentKbHttpRequest(new KbHttpRequest(new Date(), originalRequest.toString(), originalRequest.getUri(),null, null));
+                            
+                           
                         }
                     } else {
                         // Normal mode. Should store every
@@ -178,16 +173,18 @@ public class HTTPProxy {
                     HttpHeaders.setHeader(httpResponse, HttpHeaders.Names.CONTENT_TYPE,
                             con.getHeaderField(HttpHeaders.Names.CONTENT_TYPE));
 
-                    if (Rectify.isInTrainingMode()) {
+                    if (Rectify.getInstance().isInTrainingMode()) {
                         // Training mode. Should store every
                         // request in the KB
-                        if (Rectify.currentKbHttpRequest != null) {
+                        if (Rectify.getInstance().getCurrentKbHttpResponse() != null) {
                             // Rectify.currentKbHttpRequest.setKbDbOps(Rectify.currentKbDbOps);
-                            Rectify.currentKbHttpResponse = new KbHttpResponse(Rectify.currentKbHttpRequest,
-                                    new Date());
-
+                            Set<KbHttpResponse> setKbHttpResponses = new HashSet<KbHttpResponse>();
+                            setKbHttpResponses.add(new KbHttpResponse(Rectify.getInstance().getCurrentKbHttpRequest(), new Date()));
+                            Rectify.getInstance().getCurrentKbHttpRequest().setKbHttpResponses(setKbHttpResponses);
                         }
                     } else {
+                        
+                        
                         AsyncLogWriter.getInstance().addLogHttpRequest(originalRequest.toString(),
                                 originalRequest.getUri());
                     }
@@ -203,5 +200,32 @@ public class HTTPProxy {
         }
 
     }
+
+    public String getRemoteAddress() {
+        return remoteAddress;
+    }
+
+    public void setRemoteAddress(String remoteAddress) {
+        this.remoteAddress = remoteAddress;
+    }
+
+    public HttpProxyServer getServer() {
+        return server;
+    }
+
+    public void setServer(HttpProxyServer server) {
+        this.server = server;
+    }
+
+    public int getLocalPort() {
+        return localPort;
+    }
+
+    public void setLocalPort(int localPort) {
+        this.localPort = localPort;
+    }
+
+    
+    
 
 }

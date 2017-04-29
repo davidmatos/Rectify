@@ -8,17 +8,14 @@
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="connection.autocommit">true</property>
-    <mapping class="pt.inesc.rectify.hibernate.Configuration" resource="/Configuration.hbm.xml"/>
-    <mapping class="pt.inesc.rectify.hibernate.KbDbOp" resource="/KbDbOp.hbm.xml"/>
-    <mapping class="pt.inesc.rectify.hibernate.KbDbOpParts" resource="/KbDbOpParts.hbm.xml"/>
-    <mapping class="pt.inesc.rectify.hibernate.KbHttpRequest" resource="/KbHttpRequest.hbm.xml"/>
-    <mapping class="pt.inesc.rectify.hibernate.KbHttpRequestParts" resource="/KbHttpRequestParts.hbm.xml"/>
-    <mapping class="pt.inesc.rectify.hibernate.KbHttpResponse" resource="/KbHttpResponse.hbm.xml"/>
-    <mapping class="pt.inesc.rectify.hibernate.KbHttpResponseParts" resource="/KbHttpResponseParts.hbm.xml"/>
-    <mapping class="pt.inesc.rectify.hibernate.LogDbOperation" resource="/LogDbOperation.hbm.xml"/>
-    <mapping class="pt.inesc.rectify.hibernate.LogDbSubOperation" resource="/LogDbSubOperation.hbm.xml"/>
-    <mapping class="pt.inesc.rectify.hibernate.LogHttpRequest" resource="/LogHttpRequest.hbm.xml"/>
-    <!--<mapping class="pt.inesc.rectify.hibernate.LogHttpResponse" resource="/LogHttpResponse.hbm.xml"/>-->
-    <mapping class="pt.inesc.rectify.hibernate.RectifyLog" resource="/RectifyLog.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/Configuration.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/LogDbStatement.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/LogHttpRequest.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/RectifyLog.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/KbHttpRequest.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/KbHttpResponse.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/LogHttpResponse.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/KbDbOp.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/TrainningRoute.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

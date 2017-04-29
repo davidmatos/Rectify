@@ -6,12 +6,16 @@
 package pt.inesc.rectify;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.hibernate.Transaction;
-import pt.inesc.rectify.hibernate.LogDbOperation;
+import pt.inesc.rectify.hibernate.LogDbStatement;
+
 import pt.inesc.rectify.hibernate.LogHttpRequest;
+import pt.inesc.rectify.hibernate.LogHttpResponse;
 
 /**
  *
@@ -19,9 +23,9 @@ import pt.inesc.rectify.hibernate.LogHttpRequest;
  */
 public class AsyncLogWriter extends TimerTask {
 
-    private ArrayList<LogDbOperation> logDbOperations;
-    private ArrayList<LogHttpRequest> logHttpRequest;
-    
+    private List<LogDbStatement> logDbStatements;
+    private List<LogHttpRequest> logHttpRequest;
+    private List<LogHttpResponse> logHttpResponse;
 
     private static long SECONDS_TO_SYNC_LOG = 5;
 
@@ -36,40 +40,41 @@ public class AsyncLogWriter extends TimerTask {
     }
 
     public AsyncLogWriter() {
-        this.logDbOperations = new ArrayList<>();
-        this.logHttpRequest = new ArrayList<>();
+        this.logDbStatements = Collections.synchronizedList(new ArrayList<LogDbStatement>());
+        this.logHttpRequest = Collections.synchronizedList(new ArrayList<LogHttpRequest>());
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(this, SECONDS_TO_SYNC_LOG*1000, SECONDS_TO_SYNC_LOG*1000);
+        timer.scheduleAtFixedRate(this, SECONDS_TO_SYNC_LOG * 1000, SECONDS_TO_SYNC_LOG * 1000);
 
     }
-    
-    
-    
-    public void addLogDbOperation(String query){
-        this.logDbOperations.add(new LogDbOperation(new Date(), query, null));
-    
+
+    public void addLogDbStatement(String query) {
+        synchronized (this.logDbStatements) {
+            this.logDbStatements.add(new LogDbStatement(new Date(), query));
+        }
+
     }
-    
-    
-    public void addLogHttpRequest(String request, String uri){
-        this.logHttpRequest.add(new LogHttpRequest(new Date(), request, uri));
+
+    public void addLogHttpRequest(String request, String uri) {
+        synchronized (this.logHttpRequest) {
+            this.logHttpRequest.add(new LogHttpRequest(new Date(), request, uri, null));
+        }
     }
 
     @Override
     public void run() {
         System.out.println("Syncing...");
-        synchronized (logDbOperations) {
-            if (!logDbOperations.isEmpty()) {
+        synchronized (logDbStatements) {
+            if (!logDbStatements.isEmpty()) {
 
-                Transaction transaction = Rectify.hibSession.beginTransaction();
-                for (LogDbOperation dbOperation : logDbOperations) {
+                Transaction transaction = Rectify.getInstance().getHibSession().beginTransaction();
+                for (LogDbStatement dbOperation : logDbStatements) {
 
-                    Rectify.hibSession.save(dbOperation);
+                    Rectify.getInstance().getHibSession().save(dbOperation);
 
                 }
                 transaction.commit();
 
-                logDbOperations.clear();
+                logDbStatements.clear();
             }
 
         }
@@ -77,10 +82,10 @@ public class AsyncLogWriter extends TimerTask {
         synchronized (logHttpRequest) {
             if (!logHttpRequest.isEmpty()) {
 
-                Transaction transaction = Rectify.hibSession.beginTransaction();
+                Transaction transaction = Rectify.getInstance().getHibSession().beginTransaction();
                 for (LogHttpRequest httpRequest : logHttpRequest) {
 
-                    Rectify.hibSession.save(httpRequest);
+                    Rectify.getInstance().getHibSession().save(httpRequest);
 
                 }
                 transaction.commit();
@@ -88,14 +93,6 @@ public class AsyncLogWriter extends TimerTask {
                 logHttpRequest.clear();
             }
         }
-        
-        
-        
-        
-        
-        
-        
-        
 
     }
 

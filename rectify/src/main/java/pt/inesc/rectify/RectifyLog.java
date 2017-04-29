@@ -1,5 +1,5 @@
-package pt.inesc.rectify.hibernate;
-// Generated Apr 29, 2017 8:36:51 PM by Hibernate Tools 4.3.1
+package pt.inesc.rectify;
+// Generated Apr 29, 2017 5:13:20 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;

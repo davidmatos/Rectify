@@ -13,9 +13,9 @@
 
     String urlToReturn = request.getParameter("return").toString();
 
-    Rectify.httpProxy.stopProxy();
+    Rectify.getInstance().getHttpProxy().stopProxy();
 
-    Rectify.httpProxy = null;
+    Rectify.getInstance().setHttpProxy(null);
 
     response.sendRedirect(urlToReturn);
 

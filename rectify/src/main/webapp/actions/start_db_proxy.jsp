@@ -18,11 +18,11 @@
     int dbRemotePort = Integer.parseInt(request.getParameter("dbremoteport").toString());
     int dbLocalPort = Integer.parseInt(request.getParameter("dblocalport").toString());
 
-    Rectify.dbProxy = new DBProxy(dbRemoteAddress, dbRemotePort, dbLocalPort);
+    Rectify.getInstance().setDbProxy(new DBProxy(dbRemoteAddress, dbRemotePort, dbLocalPort));
 
     System.out.println("Will start db proxy to:" + dbRemoteAddress + ":" + dbRemotePort + " on port " + dbLocalPort);
     
-    Rectify.dbProxy.startProxy();
+    Rectify.getInstance().getDbProxy().startProxy();
     
     
     

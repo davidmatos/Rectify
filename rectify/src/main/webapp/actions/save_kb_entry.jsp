@@ -13,7 +13,7 @@
 	List<String> checkedIds = Arrays.asList(request.getParameterValues("kbDbOps"));
 	ArrayList<KbDbOp> currentKbDbOps = new ArrayList<>();
 	int i = 0;
-	for (KbDbOp op : Rectify.currentKbDbOps) {
+	for (KbDbOp op : Rectify.getInstance().getCurrentKbDbOps()) {
 		i++;
 
 		if (checkedIds.contains(i + "")) {
@@ -25,19 +25,19 @@
 
 	}
 
-	Transaction t = Rectify.hibSession.beginTransaction();
-	Rectify.hibSession.save(Rectify.currentKbHttpRequest);
+	Transaction t = Rectify.getInstance().getHibSession().beginTransaction();
+	Rectify.getInstance().getHibSession().save(Rectify.getInstance().getCurrentKbHttpRequest());
 
 	for (i = 0; i < currentKbDbOps.size(); i++) {
 
-		Rectify.hibSession.save(currentKbDbOps.get(i));
+		Rectify.getInstance().getHibSession().save(currentKbDbOps.get(i));
 
-		Rectify.hibSession.flush();
-		Rectify.hibSession.clear();
+		Rectify.getInstance().getHibSession().flush();
+		Rectify.getInstance().getHibSession().clear();
 
 	}
 
-	Rectify.hibSession.save(Rectify.currentKbHttpResponse);
+	Rectify.getInstance().getHibSession().save(Rectify.getInstance().getCurrentKbHttpResponse());
 	t.commit();
 
 	RectifyLogger.info("Added a new entry to the Knowledge Base");

@@ -12,7 +12,7 @@
 		</div>
 		<div class="col-sm-8">
 			<input type="checkbox" data-toggle="toggle" data-on="Enabled"
-				<%=Rectify.httpProxy != null ? "checked" : ""%> data-off="Disabled"
+                               <%=Rectify.getInstance().getHttpProxy() != null ? "checked" : ""%> data-off="Disabled"
 				id="http_proxy_running" />
 		</div>
 	</div>
@@ -23,7 +23,7 @@
 		</div>
 		<div class="col-sm-8">
 			<input type="text" class="form-control" id="httpremotehost"
-				<%=Rectify.httpProxy != null ? "disabled" : ""%>
+				<%=Rectify.getInstance().getHttpProxy() != null ? "disabled" : ""%>
 				value="<%=RectifyUtils.getConfigurationEntry(RectifyConstants.CFG_HTTP_REMOTE_HOST)%>"
 				name="<%=RectifyConstants.CFG_HTTP_REMOTE_HOST%>" />
 		</div>
@@ -34,7 +34,7 @@
 		</div>
 		<div class="col-sm-8">
 			<input type="number" class="form-control" id="httpremoteport"
-				<%=Rectify.httpProxy != null ? "disabled" : ""%>
+                               <%=Rectify.getInstance().getHttpProxy() != null ? "disabled" : ""%>
 				value="<%=RectifyUtils.getConfigurationEntry(RectifyConstants.CFG_HTTP_REMOTE_PORT)%>"
 				name="<%=RectifyConstants.CFG_HTTP_REMOTE_PORT%>" />
 		</div>
@@ -45,7 +45,7 @@
 		</div>
 		<div class="col-sm-8">
 			<input type="number" class="form-control" id="httplocalport"
-				<%=Rectify.httpProxy != null ? "disabled" : ""%>
+                               <%=Rectify.getInstance().getHttpProxy() != null ? "disabled" : ""%>
 				value="<%=RectifyUtils.getConfigurationEntry(RectifyConstants.CFG_HTTP_LOCAL_PORT)%>"
 				name="<%=RectifyConstants.CFG_HTTP_LOCAL_PORT%>" />
 		</div>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 29, 2017 8:36:51 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pt.inesc.rectify.hibernate.RectifyLog" table="rectify_log" catalog="rectify">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity"></generator>
+        </id>
+        <property name="level" type="string">
+            <column name="level" length="50" />
+        </property>
+        <property name="message" type="string">
+            <column name="message" length="1000" />
+        </property>
+        <property name="ts" type="timestamp">
+            <column name="ts" length="19" />
+        </property>
+        <property name="title" type="string">
+            <column name="title" length="50" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -9,9 +9,9 @@ String trainingMode = request.getParameter("training_mode");
 out.print("TrainingMode=" + trainingMode);
 
 if(trainingMode.equals("ON")){
-	Rectify.setModeToTraining();
+	Rectify.getInstance().setModeToTraining();
 }else{
-	Rectify.setModeToNormal();
+	Rectify.getInstance().setModeToNormal();
 }
 
 response.sendRedirect("/rectify");
