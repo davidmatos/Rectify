@@ -4,9 +4,8 @@
     Author     : david
 --%>
 
-
-<%@page import="pt.inesc.rectify.utils.RectifyUtils"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="pt.inesc.rectify.utils.RectifyUtils"%>
 <!DOCTYPE html>
 
 
@@ -18,9 +17,7 @@
     </head>
     <body>
         <%
-
             if (RectifyUtils.isNewInstance() || request.getParameterMap().containsKey("step")) {
-
         %>
         <jsp:include page="configuration/configuration.jsp" />
         <%        } else {    %>

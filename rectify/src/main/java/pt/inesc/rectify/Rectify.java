@@ -13,9 +13,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import pt.inesc.rectify.db.proxy.DBProxy;
-import pt.inesc.rectify.hibernate.KbDbOp;
+import pt.inesc.rectify.hibernate.KbDbStatement;
 import pt.inesc.rectify.hibernate.KbHttpRequest;
-import pt.inesc.rectify.hibernate.KbHttpResponse;
 import pt.inesc.rectify.hibernate.RectifyLog;
 import pt.inesc.rectify.http.proxy.HTTPProxy;
 import pt.inesc.rectify.utils.HibernateUtil;
@@ -27,14 +26,13 @@ import pt.inesc.rectify.utils.HibernateUtil;
 public class Rectify {
 
     private static final boolean MODE_NORMAL = false;
-    private static final boolean MODE_TRAINING = true;
+    private static final boolean MODE_TEACHING = true;
 
     private Session hibSession;
 
     
     private KbHttpRequest currentKbHttpRequest = null;
-    private KbHttpResponse currentKbHttpResponse = null;
-    private Set<KbDbOp> currentKbDbOps = new HashSet<>();
+    private Set<KbDbStatement> currentKbDbOps = new HashSet<>();
 
     private DBProxy dbProxy = null;
 
@@ -69,18 +67,17 @@ public class Rectify {
         mode = MODE_NORMAL;
     }
 
-    public void setModeToTraining() {
+    public void setModeToTeaching() {
         RectifyLogger.info("Mode set to training");
-        mode = MODE_TRAINING;
+        mode = MODE_TEACHING;
 
         currentKbHttpRequest = null;
-        currentKbHttpResponse = null;
         currentKbDbOps = new HashSet<>();
 
     }
 
-    public  boolean isInTrainingMode() {
-        return mode == MODE_TRAINING;
+    public  boolean isInTeachingMode() {
+        return mode == MODE_TEACHING;
     }
 
     public boolean isInNormalMode() {
@@ -93,12 +90,10 @@ public class Rectify {
         currentKbDbOps = new HashSet<>();
     }
 
-    public void setCurrentKbHttpResponse(KbHttpResponse response) {
-        currentKbHttpResponse = response;
-    }
+    
 
-    public void addCurrentKbDbOp(KbDbOp dbOp) {
-        currentKbDbOps.add(dbOp);
+    public void addCurrentKbDbStatement(KbDbStatement stmt) {
+        currentKbDbOps.add(stmt);
     }
 
     public Session getHibSession() {
@@ -109,11 +104,11 @@ public class Rectify {
         this.hibSession = hibSession;
     }
 
-    public Set<KbDbOp> getCurrentKbDbOps() {
+    public Set<KbDbStatement> getCurrentKbDbStatements() {
         return currentKbDbOps;
     }
 
-    public void setCurrentKbDbOps(Set<KbDbOp> currentKbDbOps) {
+    public void setCurrentKbDbOps(Set<KbDbStatement> currentKbDbOps) {
         this.currentKbDbOps = currentKbDbOps;
     }
 
@@ -145,12 +140,6 @@ public class Rectify {
         return currentKbHttpRequest;
     }
 
-    public KbHttpResponse getCurrentKbHttpResponse() {
-        return currentKbHttpResponse;
-    }
-    
-    
-    
     
     
     

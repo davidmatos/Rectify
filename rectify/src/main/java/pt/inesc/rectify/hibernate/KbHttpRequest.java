@@ -1,5 +1,5 @@
 package pt.inesc.rectify.hibernate;
-// Generated Apr 29, 2017 8:36:51 PM by Hibernate Tools 4.3.1
+// Generated May 1, 2017 3:05:02 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -16,8 +16,7 @@ public class KbHttpRequest  implements java.io.Serializable {
      private Date ts;
      private String request;
      private String uri;
-     private Set kbHttpResponses = new HashSet(0);
-     private Set kbDbOps = new HashSet(0);
+     private Set kbDbStatements = new HashSet(0);
 
     public KbHttpRequest() {
     }
@@ -26,12 +25,11 @@ public class KbHttpRequest  implements java.io.Serializable {
     public KbHttpRequest(Date ts) {
         this.ts = ts;
     }
-    public KbHttpRequest(Date ts, String request, String uri, Set kbHttpResponses, Set kbDbOps) {
+    public KbHttpRequest(Date ts, String request, String uri, Set kbDbStatements) {
        this.ts = ts;
        this.request = request;
        this.uri = uri;
-       this.kbHttpResponses = kbHttpResponses;
-       this.kbDbOps = kbDbOps;
+       this.kbDbStatements = kbDbStatements;
     }
    
     public Integer getId() {
@@ -62,19 +60,12 @@ public class KbHttpRequest  implements java.io.Serializable {
     public void setUri(String uri) {
         this.uri = uri;
     }
-    public Set getKbHttpResponses() {
-        return this.kbHttpResponses;
+    public Set getKbDbStatements() {
+        return this.kbDbStatements;
     }
     
-    public void setKbHttpResponses(Set kbHttpResponses) {
-        this.kbHttpResponses = kbHttpResponses;
-    }
-    public Set getKbDbOps() {
-        return this.kbDbOps;
-    }
-    
-    public void setKbDbOps(Set kbDbOps) {
-        this.kbDbOps = kbDbOps;
+    public void setKbDbStatements(Set kbDbStatements) {
+        this.kbDbStatements = kbDbStatements;
     }
 
 

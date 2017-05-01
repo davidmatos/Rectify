@@ -4,6 +4,7 @@
     Author     : david
 --%>
 
+<%@page import="pt.inesc.rectify.db.parser.ParsedQuery"%>
 <%@page import="pt.inesc.rectify.hibernate.LogDbStatement"%>
 <%@page import="pt.inesc.rectify.hibernate.LogHttpRequest"%>
 <%@page import="org.hibernate.Query"%>
@@ -11,7 +12,6 @@
 <%@page import="java.util.List"%>
 <%@page import="org.hibernate.Session"%>
 <%@page import="pt.inesc.rectify.utils.HibernateUtil"%>
-<%@page import="pt.inesc.rectify.utils.RectifyUtils"%>
 <%@page import="pt.inesc.rectify.Rectify"%>
 <%@page import="pt.inesc.rectify.RectifyConstants"%>
 
@@ -141,14 +141,15 @@
                                
                                 for (LogDbStatement logDbStatment : dbStatements) {
                                     String q = logDbStatment.getRequest();
+                                    ParsedQuery pQuery = new ParsedQuery(q);
                                     if (q.length() > 25) {
                                         q =  "..." + q.substring(q.length()-25, q.length());
                                     }
                             %>
                             <tr>
                                 <th scope="row"><%= logDbStatment.getId()%></th>
-                                <td><%= q%></td>
-                                <td>TODO</td>
+                                <td><%= pQuery.getStatementType() %></td>
+                                <td><%= pQuery.getColumns() %> </td>
                                 <td><%= logDbStatment.getTs()%></td>
                             </tr>
                             <%
@@ -182,17 +183,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <%                                                    List<RectifyLog> logs = Rectify.getInstance().getHibSession().createQuery("FROM RectifyLog as rl  where rl.level <> ? and rl.level <> ? order by ts desc")
-                                    .setString(0, "QUERY").setString(1, "HTTP")
-                                    .setMaxResults(100).list();
+                        <%  List<RectifyLog> logs = Rectify.getInstance().getHibSession().createQuery("FROM RectifyLog as rl  order by id desc").setMaxResults(100).list();
                             for (RectifyLog log : logs) {
                         %>
                         <tr
-                            class="<%=log.getLevel().equals("INFO")
-                                    ? "success"
-                                    : log.getLevel().equals("WARNING") ? "warning" : log.getLevel().equals("QUERY")
-                                    ? "info"
-                                    : log.getLevel().equals("HTTP") ? "default" : "danger"%>">
+                            class="<%=log.getLevel()%>">
                             <td><%=log.getTs()%></td>
                             <td><%=log.getLevel()%></td>
                             <td><%=log.getMessage()%></td>

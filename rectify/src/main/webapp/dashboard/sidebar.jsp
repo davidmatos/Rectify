@@ -25,5 +25,7 @@ if(request.getParameterMap().containsKey("p")){
         <li <%= p.equals("http_log") ? "class=\"active\"": ""%>><a href="?p=http_log">HTTP Log</a></li>
         <li <%= p.equals("db_log") ? "class=\"active\"": ""%>><a href="?p=db_log">DB Log</a></li>
         <li <%= p.equals("knowledge_base") ? "class=\"active\"": ""%>><a href="?p=knowledge_base">Knowledge Base</a></li>
+        <li <%= p.equals("trainning") ? "class=\"active\"": ""%>><a href="?p=trainning">Trainning</a></li>
+        
     </ul>
 </div>

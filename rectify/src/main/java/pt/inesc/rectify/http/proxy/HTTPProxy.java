@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.Date;
+
 
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersAdapter;
@@ -31,13 +31,12 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
-import java.util.HashSet;
-import java.util.Set;
+
 import pt.inesc.rectify.AsyncLogWriter;
 import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.RectifyLogger;
-import pt.inesc.rectify.hibernate.KbHttpRequest;
-import pt.inesc.rectify.hibernate.KbHttpResponse;
+
+
 
 /**
  * Hello world!
@@ -65,6 +64,7 @@ public class HTTPProxy {
 
     public void stopProxy() {
         server.stop();
+        RectifyLogger.info("HTTP Proxy for " + this.remoteAddress + " stoped");
     }
 
     class RectifyHTTPFilter extends HttpFiltersSourceAdapter {
@@ -82,22 +82,24 @@ public class HTTPProxy {
 //                    AsyncLogWriter.getInstance().addLogHttpRequest(originalRequest.toString(), originalRequest.getUri());
                     originalRequest.setUri(remoteAddress + originalRequest.getUri());
 
-                    if (Rectify.getInstance().isInTrainingMode()) {
+                    if (Rectify.getInstance().isInTeachingMode()) {
                         // Training mode. Should store every
                         // request in the KB
-                        if (Rectify.getInstance().getCurrentKbHttpRequest() == null) {
-                            Rectify.getInstance().setCurrentKbHttpRequest(new KbHttpRequest(new Date(), originalRequest.toString(), originalRequest.getUri(),null, null));
-                            
-                           
-                        }
+//                        if (Rectify.getInstance().getCurrentKbHttpRequest() == null) {
+//                            Rectify.getInstance().setCurrentKbHttpRequest(new KbHttpRequest(new Date(), originalRequest.toString(), originalRequest.getUri(),null, null));
+//                            
+//                           
+//                        }
                     } else {
                         // Normal mode. Should store every
                         // request in the DB Log
 
                         AsyncLogWriter.getInstance().addLogHttpRequest(originalRequest.toString(),
-                                originalRequest.getUri());
+                                originalRequest.getUri(), "host");
 
                     }
+                    
+                    
 
                     URL obj = null;
                     try {
@@ -128,9 +130,8 @@ public class HTTPProxy {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                    // System.out.println("\nSending 'GET' request to URL : " +
-                    // originalRequest.getUri());
-//                    RectifyLogger.info(originalRequest.getUri());
+                    
+
                     BufferedReader in = null;
                     InputStreamReader isr = null;
                     try {
@@ -139,7 +140,7 @@ public class HTTPProxy {
                         in = new BufferedReader(isr);
 
                     } catch (IOException e1) {
-                        // e1.printStackTrace();
+                        e1.printStackTrace();
                     }
                     String inputLine;
                     StringBuffer response = new StringBuffer();
@@ -161,7 +162,7 @@ public class HTTPProxy {
                     try {
                         buffer = Unpooled.wrappedBuffer(response.toString()
                                 .replaceAll(remoteAddress, "http://localhost:" + localPort).getBytes("UTF-8"));
-                        // buffer = Unpooled.wrappedBuffer( response.);
+//                         buffer = Unpooled.wrappedBuffer( response.toString().getBytes("UTF-8"));
 
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
@@ -173,20 +174,20 @@ public class HTTPProxy {
                     HttpHeaders.setHeader(httpResponse, HttpHeaders.Names.CONTENT_TYPE,
                             con.getHeaderField(HttpHeaders.Names.CONTENT_TYPE));
 
-                    if (Rectify.getInstance().isInTrainingMode()) {
+                    if (Rectify.getInstance().isInTeachingMode()) {
                         // Training mode. Should store every
                         // request in the KB
-                        if (Rectify.getInstance().getCurrentKbHttpResponse() != null) {
-                            // Rectify.currentKbHttpRequest.setKbDbOps(Rectify.currentKbDbOps);
-                            Set<KbHttpResponse> setKbHttpResponses = new HashSet<KbHttpResponse>();
-                            setKbHttpResponses.add(new KbHttpResponse(Rectify.getInstance().getCurrentKbHttpRequest(), new Date()));
-                            Rectify.getInstance().getCurrentKbHttpRequest().setKbHttpResponses(setKbHttpResponses);
-                        }
+//                        if (Rectify.getInstance().getCurrentKbHttpResponse() != null) {
+//                            // Rectify.currentKbHttpRequest.setKbDbOps(Rectify.currentKbDbOps);
+//                            Set<KbHttpResponse> setKbHttpResponses = new HashSet<KbHttpResponse>();
+//                            setKbHttpResponses.add(new KbHttpResponse(Rectify.getInstance().getCurrentKbHttpRequest(), new Date()));
+//                            Rectify.getInstance().getCurrentKbHttpRequest().setKbHttpResponses(setKbHttpResponses);
+//                        }
                     } else {
                         
                         
-                        AsyncLogWriter.getInstance().addLogHttpRequest(originalRequest.toString(),
-                                originalRequest.getUri());
+//                        AsyncLogWriter.getInstance().addLogHttpRequest(originalRequest.toString(),
+//                                originalRequest.getUri(), , ctx.channel().localAddress().toString());
                     }
 
                     return httpResponse;

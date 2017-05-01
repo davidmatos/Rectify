@@ -1,5 +1,5 @@
-<%@page import="pt.inesc.rectify.RectifyConstants"%>
 <%@page import="pt.inesc.rectify.utils.RectifyUtils"%>
+<%@page import="pt.inesc.rectify.RectifyConstants"%>
 <%@page import="pt.inesc.rectify.Rectify"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -33,7 +33,7 @@
 		<div class="col-sm-8">
 			<input type="number" class="form-control" id="dbremoteport"
                                <%=Rectify.getInstance().getDbProxy() != null ? "disabled" : ""%>
-				value="<%=RectifyUtils.getConfigurationEntry(RectifyConstants.CFG_DB_REMOTE_PORT)%>" 
+                               value="<%=RectifyUtils.getConfigurationEntry(RectifyConstants.CFG_DB_REMOTE_PORT)%>" 
 				name="<%= RectifyConstants.CFG_DB_REMOTE_PORT %>"/>
 		</div>
 	</div>

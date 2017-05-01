@@ -54,15 +54,15 @@ public class AsyncLogWriter extends TimerTask {
 
     }
 
-    public void addLogHttpRequest(String request, String uri) {
+    public void addLogHttpRequest(String request, String uri, String host) {
         synchronized (this.logHttpRequest) {
-            this.logHttpRequest.add(new LogHttpRequest(new Date(), request, uri, null));
+            this.logHttpRequest.add(new LogHttpRequest(new Date(), request, uri, host, null));
         }
     }
 
     @Override
     public void run() {
-        System.out.println("Syncing...");
+        
         synchronized (logDbStatements) {
             if (!logDbStatements.isEmpty()) {
 
@@ -73,7 +73,7 @@ public class AsyncLogWriter extends TimerTask {
 
                 }
                 transaction.commit();
-
+                
                 logDbStatements.clear();
             }
 

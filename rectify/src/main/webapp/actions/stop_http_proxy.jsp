@@ -4,18 +4,17 @@
     Author     : david
 --%>
 
-
-<%@page import="pt.inesc.rectify.db.proxy.DBProxy"%>
 <%@page import="pt.inesc.rectify.Rectify"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
 
     String urlToReturn = request.getParameter("return").toString();
+    if (Rectify.getInstance().getHttpProxy() != null) {
+        Rectify.getInstance().getHttpProxy().stopProxy();
 
-    Rectify.getInstance().getHttpProxy().stopProxy();
-
-    Rectify.getInstance().setHttpProxy(null);
+        Rectify.getInstance().setHttpProxy(null);
+    }
 
     response.sendRedirect(urlToReturn);
 

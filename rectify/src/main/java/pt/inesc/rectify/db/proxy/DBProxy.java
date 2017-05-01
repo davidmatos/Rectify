@@ -8,13 +8,15 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.Date;
+
 
 import pt.inesc.rectify.AsyncLogWriter;
 
 import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.RectifyLogger;
-import pt.inesc.rectify.hibernate.KbDbOp;
+import pt.inesc.rectify.db.parser.DBParser;
+import pt.inesc.rectify.hibernate.KbDbStatement;
+
 
 /**
  *
@@ -41,6 +43,8 @@ public class DBProxy {
     public void stopProxy() throws Exception {
 
         server.close();
+        
+        RectifyLogger.info("DB Proxy for " + host + ":" + remotePort + " stoped");
 
     }
 
@@ -139,12 +143,13 @@ class ThreadProxy extends Thread {
                                 if (request[4] == 3) {
 
 //									RectifyLogger.info(query);
-                                    if (Rectify.getInstance().isInTrainingMode()) {
+                                    if (Rectify.getInstance().isInTeachingMode()) {
                                         // Training mode. Should store every
                                         // request in the KB
                                         if (Rectify.getInstance().getCurrentKbHttpRequest() != null) {
-                                            KbDbOp dbOp = new KbDbOp(Rectify.getInstance().getCurrentKbHttpRequest(), new Date(), query);
-                                            Rectify.getInstance().addCurrentKbDbOp(dbOp);
+                                            
+                                            KbDbStatement dbStmt = DBParser.getKbDbStatement(query);
+                                            Rectify.getInstance().addCurrentKbDbStatement(dbStmt);
                                         }
                                     } else {
                                         // Normal mode. Should store every
@@ -161,12 +166,12 @@ class ThreadProxy extends Thread {
                             // TODO CREATE YOUR LOGIC HERE
                         }
                     } catch (IOException e) {
-                        RectifyLogger.error("[101]" + e.getMessage());
+                        RectifyLogger.severe("[101]" + e.getMessage());
                     }
                     try {
                         outToServer.close();
                     } catch (IOException e) {
-                        RectifyLogger.error("[102]" + e.getMessage());
+                        RectifyLogger.severe("[102]" + e.getMessage());
                     }
                 }
             }.start();
@@ -183,7 +188,7 @@ class ThreadProxy extends Thread {
                     // TODO CREATE YOUR LOGIC HERE
                 }
             } catch (IOException e) {
-                RectifyLogger.error("[103]" + e.getMessage());
+                RectifyLogger.severe("[103]" + e.getMessage());
             } finally {
                 try {
                     if (server != null) {
@@ -193,13 +198,13 @@ class ThreadProxy extends Thread {
                         client.close();
                     }
                 } catch (IOException e) {
-                    RectifyLogger.error("[104]" + e.getMessage());
+                    RectifyLogger.severe("[104]" + e.getMessage());
                 }
             }
             outToClient.close();
             sClient.close();
         } catch (IOException e) {
-            RectifyLogger.error("[105]" + e.getMessage());
+            RectifyLogger.severe("[105]" + e.getMessage());
         }
     }
 
@@ -214,7 +219,7 @@ class ThreadProxy extends Thread {
             PrintWriter out = new PrintWriter(new OutputStreamWriter(outToClient));
             out.flush();
             // throw new RuntimeException(e);
-            RectifyLogger.error("[106]" + e.getMessage());
+            RectifyLogger.severe("[106]" + e.getMessage());
         }
 
     }

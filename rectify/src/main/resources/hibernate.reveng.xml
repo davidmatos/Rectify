@@ -41,13 +41,12 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="rectify"/>
-<!--  <table-filter match-name="log_http_request"/>
-  <table-filter match-name="kb_db_op"/>
-  <table-filter match-name="kb_http_request"/>
-  <table-filter match-name="log_db_statement"/>
-  <table-filter match-name="rectify_log"/>
+<!--  <table-filter match-name="kb_http_request"/>
+  <table-filter match-name="kb_db_statement"/>
   <table-filter match-name="configuration"/>
-  <table-filter match-name="kb_http_response"/>
-  <table-filter match-name="log_http_response"/>-->
-    <table-filter match-name="trainning_route"/>
+  <table-filter match-name="log_db_statement"/>
+  <table-filter match-name="log_http_response"/>
+  <table-filter match-name="rectify_log"/>
+  <table-filter match-name="log_http_request"/>-->
+  <table-filter match-name="teaching_route"/>
 </hibernate-reverse-engineering>
