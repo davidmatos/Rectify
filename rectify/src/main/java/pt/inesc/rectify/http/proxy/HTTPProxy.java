@@ -35,6 +35,7 @@ import pt.inesc.rectify.AsyncLogWriter;
 import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.RectifyLogger;
 import pt.inesc.rectify.hibernate.KbHttpRequest;
+import pt.inesc.rectify.http.parser.HttpParser;
 
 /**
  * Hello world!
@@ -82,8 +83,10 @@ public class HTTPProxy {
                         // Training mode. Should store every
                         // request in the KB
                         if (Rectify.getInstance().getCurrentKbHttpRequest() == null) {
-                            Rectify.getInstance().setCurrentKbHttpRequest(new KbHttpRequest(new Date(), originalRequest.toString(), originalRequest.getUri(), null));
-
+                            Rectify.getInstance().setCurrentKbHttpRequest(HttpParser.getKbHttpRequest(originalRequest.toString()));
+                            if(Rectify.getInstance().getCurrentKbHttpRequest() == null){
+                                System.out.println("NULLL");
+                            }
                         }
                     } else {
                         // Normal mode. Should store every

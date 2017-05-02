@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 1, 2017 3:05:03 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated May 2, 2017 4:04:57 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="pt.inesc.rectify.hibernate.KbHttpRequest" table="kb_http_request" catalog="rectify">
+    <class name="pt.inesc.rectify.hibernate.KbHttpRequest" table="kb_http_request" catalog="rectify" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="identity"></generator>
+            <generator class="identity" />
         </id>
         <property name="ts" type="timestamp">
             <column name="ts" length="19" not-null="true" />
@@ -16,6 +16,18 @@
         </property>
         <property name="uri" type="string">
             <column name="uri" length="500" />
+        </property>
+        <property name="method" type="string">
+            <column name="method" length="10" />
+        </property>
+        <property name="nrOfParameters" type="java.lang.Integer">
+            <column name="nr_of_parameters" />
+        </property>
+        <property name="parameters" type="string">
+            <column name="parameters" length="500" />
+        </property>
+        <property name="parametersValues" type="string">
+            <column name="parameters_values" length="500" />
         </property>
         <set name="kbDbStatements" table="kb_db_statement" inverse="true" lazy="true" fetch="select">
             <key>

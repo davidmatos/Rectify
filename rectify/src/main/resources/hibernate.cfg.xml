@@ -12,9 +12,9 @@
     <mapping resource="pt/inesc/rectify/hibernate/LogDbStatement.hbm.xml"/>
     <mapping resource="pt/inesc/rectify/hibernate/LogHttpRequest.hbm.xml"/>
     <mapping resource="pt/inesc/rectify/hibernate/RectifyLog.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/hibernate/KbHttpRequest.hbm.xml"/>
     <mapping resource="pt/inesc/rectify/hibernate/LogHttpResponse.hbm.xml"/>
-    <mapping resource="pt/inesc/rectify/hibernate/KbDbStatement.hbm.xml"/>
     <mapping resource="pt/inesc/rectify/hibernate/TeachingRoute.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/KbHttpRequest.hbm.xml"/>
+    <mapping resource="pt/inesc/rectify/hibernate/KbDbStatement.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

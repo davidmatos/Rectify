@@ -1,5 +1,5 @@
 package pt.inesc.rectify.hibernate;
-// Generated May 1, 2017 3:05:02 PM by Hibernate Tools 4.3.1
+// Generated May 2, 2017 4:04:56 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -16,6 +16,10 @@ public class KbHttpRequest  implements java.io.Serializable {
      private Date ts;
      private String request;
      private String uri;
+     private String method;
+     private Integer nrOfParameters;
+     private String parameters;
+     private String parametersValues;
      private Set kbDbStatements = new HashSet(0);
 
     public KbHttpRequest() {
@@ -25,10 +29,14 @@ public class KbHttpRequest  implements java.io.Serializable {
     public KbHttpRequest(Date ts) {
         this.ts = ts;
     }
-    public KbHttpRequest(Date ts, String request, String uri, Set kbDbStatements) {
+    public KbHttpRequest(Date ts, String request, String uri, String method, Integer nrOfParameters, String parameters, String parametersValues, Set kbDbStatements) {
        this.ts = ts;
        this.request = request;
        this.uri = uri;
+       this.method = method;
+       this.nrOfParameters = nrOfParameters;
+       this.parameters = parameters;
+       this.parametersValues = parametersValues;
        this.kbDbStatements = kbDbStatements;
     }
    
@@ -59,6 +67,34 @@ public class KbHttpRequest  implements java.io.Serializable {
     
     public void setUri(String uri) {
         this.uri = uri;
+    }
+    public String getMethod() {
+        return this.method;
+    }
+    
+    public void setMethod(String method) {
+        this.method = method;
+    }
+    public Integer getNrOfParameters() {
+        return this.nrOfParameters;
+    }
+    
+    public void setNrOfParameters(Integer nrOfParameters) {
+        this.nrOfParameters = nrOfParameters;
+    }
+    public String getParameters() {
+        return this.parameters;
+    }
+    
+    public void setParameters(String parameters) {
+        this.parameters = parameters;
+    }
+    public String getParametersValues() {
+        return this.parametersValues;
+    }
+    
+    public void setParametersValues(String parametersValues) {
+        this.parametersValues = parametersValues;
     }
     public Set getKbDbStatements() {
         return this.kbDbStatements;

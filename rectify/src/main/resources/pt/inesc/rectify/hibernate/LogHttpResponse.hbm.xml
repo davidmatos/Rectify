@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 1, 2017 3:05:03 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated May 2, 2017 4:04:57 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="pt.inesc.rectify.hibernate.LogHttpResponse" table="log_http_response" catalog="rectify">
         <id name="id" type="java.lang.Integer">
