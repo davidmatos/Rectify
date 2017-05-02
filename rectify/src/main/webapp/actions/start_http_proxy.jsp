@@ -12,20 +12,20 @@
 
 <%
 
+    if (Rectify.getInstance().getHttpProxy() == null) {
+
+        String httpRemoteAddress = request.getParameter("httpremotehost").toString();
+
+        //int httpRemotePort = Integer.parseInt(request.getParameter("httpremoteport").toString());
+        int httpLocalPort = Integer.parseInt(request.getParameter("httplocalport").toString());
+
+        HTTPProxy httpProxy = new HTTPProxy(httpRemoteAddress, httpLocalPort);
+
+        Rectify.getInstance().setHttpProxy(httpProxy);
+        Rectify.getInstance().getHttpProxy().startProxy();
+    }
+
     String urlToReturn = request.getParameter("return");
-
-    String httpRemoteAddress = request.getParameter("httpremotehost").toString();
-
-    //int httpRemotePort = Integer.parseInt(request.getParameter("httpremoteport").toString());
-    int httpLocalPort = Integer.parseInt(request.getParameter("httplocalport").toString());
-
-    HTTPProxy httpProxy = new HTTPProxy(httpRemoteAddress, httpLocalPort);
-    
-    Rectify.getInstance().setHttpProxy(httpProxy);
-    Rectify.getInstance().getHttpProxy().startProxy();
-    
-    
-    
     response.sendRedirect(urlToReturn);
 
 %>

@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
-
+import java.util.HashSet;
 
 import pt.inesc.rectify.AsyncLogWriter;
 
@@ -16,7 +16,6 @@ import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.RectifyLogger;
 import pt.inesc.rectify.db.parser.DBParser;
 import pt.inesc.rectify.hibernate.KbDbStatement;
-
 
 /**
  *
@@ -32,6 +31,8 @@ public class DBProxy {
     private ServerSocket server;
 
     private ServerThread serverThread;
+    
+    private HashSet<KbDbStatement> teachingModeStatements = new HashSet<>();
 
     public DBProxy(String remoteHost, int remotePort, int localPort) {
         this.host = remoteHost;
@@ -43,7 +44,7 @@ public class DBProxy {
     public void stopProxy() throws Exception {
 
         server.close();
-        
+
         RectifyLogger.info("DB Proxy for " + host + ":" + remotePort + " stoped");
 
     }
@@ -57,7 +58,7 @@ public class DBProxy {
 
     }
 
-}
+
 
 // waits for new connections
 class ServerThread extends Thread {
@@ -108,6 +109,8 @@ class ThreadProxy extends Thread {
 
     private InputStream inFromServer = null;
     private OutputStream outToServer = null;
+    
+    
 
     ThreadProxy(Socket sClient, String ServerUrl, int ServerPort) {
         this.SERVER_URL = ServerUrl;
@@ -136,25 +139,20 @@ class ThreadProxy extends Thread {
                                 byte[] received = Arrays.copyOfRange(request, 5, bytes_read);
                                 String query = new String(received);
 
-//								 System.out.println("query1:" + query);
-//								 System.out.println("["+request[4]+"]query2:"
-//								 + new String(Arrays.copyOfRange(request, 5,
-//								 bytes_read)));
                                 if (request[4] == 3) {
+                                    
 
-//									RectifyLogger.info(query);
                                     if (Rectify.getInstance().isInTeachingMode()) {
-                                        // Training mode. Should store every
-                                        // request in the KB
-                                        if (Rectify.getInstance().getCurrentKbHttpRequest() != null) {
-                                            
-                                            KbDbStatement dbStmt = DBParser.getKbDbStatement(query);
+//                                        if (Rectify.getInstance().getCurrentKbHttpRequest() != null) {
+                                             
+                                            KbDbStatement dbStmt = DBParser.getKbDbStatement(query, Rectify.getInstance().getCurrentKbHttpRequest());
                                             Rectify.getInstance().addCurrentKbDbStatement(dbStmt);
-                                        }
+                                            teachingModeStatements.add(dbStmt);
+                                                    
+                                            
+//                                        }
                                     } else {
-                                        // Normal mode. Should store every
-                                        // request in the DB Log
-                                        System.out.println("Logging this query:"+query);
+
                                         AsyncLogWriter.getInstance().addLogDbStatement(query);
                                     }
 
@@ -223,5 +221,24 @@ class ThreadProxy extends Thread {
         }
 
     }
+
+  
+    
+}
+
+
+  public HashSet<KbDbStatement> getTeachingModeStatements() {
+        return teachingModeStatements;
+    }
+
+    public void resetTeachingModeStatements() {
+         teachingModeStatements = new HashSet<>();
+    }
+    
+    public void setTeachingModeStatements(HashSet<KbDbStatement> teachingModeStatements) {
+        this.teachingModeStatements = teachingModeStatements;
+    }
+
+
 
 }

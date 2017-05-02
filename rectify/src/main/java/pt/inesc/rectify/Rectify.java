@@ -29,10 +29,12 @@ public class Rectify {
     private static final boolean MODE_TEACHING = true;
 
     private Session hibSession;
+    
+    private HashSet<KbDbStatement> scheduledStatements = new HashSet<>();
 
     
     private KbHttpRequest currentKbHttpRequest = null;
-    private Set<KbDbStatement> currentKbDbOps = new HashSet<>();
+    
 
     private DBProxy dbProxy = null;
 
@@ -57,7 +59,7 @@ public class Rectify {
             hibSession.delete(item);
         }
         hibSession.flush();
-        assert hibSession.createQuery("FROM RectifyLog item").list().size() == 0;
+        assert hibSession.createQuery("FROM RectifyLog item").list().isEmpty();
         t.commit();
 
     }
@@ -72,7 +74,7 @@ public class Rectify {
         mode = MODE_TEACHING;
 
         currentKbHttpRequest = null;
-        currentKbDbOps = new HashSet<>();
+        
 
     }
 
@@ -87,13 +89,22 @@ public class Rectify {
 
     public void setCurrentKbHttpRequest(KbHttpRequest request) {
         currentKbHttpRequest = request;
-        currentKbDbOps = new HashSet<>();
+        if(request != null){
+            System.out.println("Tenho "+this.scheduledStatements.size() + "agendados.");
+            currentKbHttpRequest.setKbDbStatements(this.scheduledStatements);
+            this.scheduledStatements = new HashSet<>();
+        }
+        //currentKbHttpRequest.setKbDbStatements(new HashSet<>());
     }
 
     
 
     public void addCurrentKbDbStatement(KbDbStatement stmt) {
-        currentKbDbOps.add(stmt);
+        if(currentKbHttpRequest == null){
+            this.scheduledStatements.add(stmt);
+        }else{
+        currentKbHttpRequest.getKbDbStatements().add(stmt);
+        }
     }
 
     public Session getHibSession() {
@@ -105,11 +116,11 @@ public class Rectify {
     }
 
     public Set<KbDbStatement> getCurrentKbDbStatements() {
-        return currentKbDbOps;
+        return currentKbHttpRequest.getKbDbStatements();
     }
 
-    public void setCurrentKbDbOps(Set<KbDbStatement> currentKbDbOps) {
-        this.currentKbDbOps = currentKbDbOps;
+    public void setCurrentKbDbStatements(Set<KbDbStatement> currentKbDbStatements) {
+        currentKbHttpRequest.setKbDbStatements(currentKbDbStatements);
     }
 
     public DBProxy getDbProxy() {

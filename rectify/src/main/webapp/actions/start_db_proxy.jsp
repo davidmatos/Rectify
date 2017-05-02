@@ -11,21 +11,20 @@
 
 <%
 
+    if (Rectify.getInstance().getDbProxy() == null) {
+        String dbRemoteAddress = request.getParameter("dbremotehost").toString();
+
+        int dbRemotePort = Integer.parseInt(request.getParameter("dbremoteport").toString());
+        int dbLocalPort = Integer.parseInt(request.getParameter("dblocalport").toString());
+
+        Rectify.getInstance().setDbProxy(new DBProxy(dbRemoteAddress, dbRemotePort, dbLocalPort));
+
+        System.out.println("Will start db proxy to:" + dbRemoteAddress + ":" + dbRemotePort + " on port " + dbLocalPort);
+
+        Rectify.getInstance().getDbProxy().startProxy();
+    }
+
     String urlToReturn = request.getParameter("return");
-
-    String dbRemoteAddress = request.getParameter("dbremotehost").toString();
-
-    int dbRemotePort = Integer.parseInt(request.getParameter("dbremoteport").toString());
-    int dbLocalPort = Integer.parseInt(request.getParameter("dblocalport").toString());
-
-    Rectify.getInstance().setDbProxy(new DBProxy(dbRemoteAddress, dbRemotePort, dbLocalPort));
-
-    System.out.println("Will start db proxy to:" + dbRemoteAddress + ":" + dbRemotePort + " on port " + dbLocalPort);
-    
-    Rectify.getInstance().getDbProxy().startProxy();
-    
-    
-    
     response.sendRedirect(urlToReturn);
 
 %>

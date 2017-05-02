@@ -9,7 +9,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersAdapter;
 import org.littleshoot.proxy.HttpFiltersSourceAdapter;
@@ -20,7 +19,6 @@ import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
  *
  * @author David Matos
  */
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -31,12 +29,12 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import java.util.Date;
 
 import pt.inesc.rectify.AsyncLogWriter;
 import pt.inesc.rectify.Rectify;
 import pt.inesc.rectify.RectifyLogger;
-
-
+import pt.inesc.rectify.hibernate.KbHttpRequest;
 
 /**
  * Hello world!
@@ -47,8 +45,6 @@ public class HTTPProxy {
     private String remoteAddress = "";
     private HttpProxyServer server;
     private int localPort;
-
-
 
     public HTTPProxy(String proxiedUrl, int localPort) {
         this.remoteAddress = proxiedUrl;
@@ -85,11 +81,10 @@ public class HTTPProxy {
                     if (Rectify.getInstance().isInTeachingMode()) {
                         // Training mode. Should store every
                         // request in the KB
-//                        if (Rectify.getInstance().getCurrentKbHttpRequest() == null) {
-//                            Rectify.getInstance().setCurrentKbHttpRequest(new KbHttpRequest(new Date(), originalRequest.toString(), originalRequest.getUri(),null, null));
-//                            
-//                           
-//                        }
+                        if (Rectify.getInstance().getCurrentKbHttpRequest() == null) {
+                            Rectify.getInstance().setCurrentKbHttpRequest(new KbHttpRequest(new Date(), originalRequest.toString(), originalRequest.getUri(), null));
+
+                        }
                     } else {
                         // Normal mode. Should store every
                         // request in the DB Log
@@ -98,8 +93,6 @@ public class HTTPProxy {
                                 originalRequest.getUri(), "host");
 
                     }
-                    
-                    
 
                     URL obj = null;
                     try {
@@ -130,7 +123,6 @@ public class HTTPProxy {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                    
 
                     BufferedReader in = null;
                     InputStreamReader isr = null;
@@ -184,8 +176,7 @@ public class HTTPProxy {
 //                            Rectify.getInstance().getCurrentKbHttpRequest().setKbHttpResponses(setKbHttpResponses);
 //                        }
                     } else {
-                        
-                        
+
 //                        AsyncLogWriter.getInstance().addLogHttpRequest(originalRequest.toString(),
 //                                originalRequest.getUri(), , ctx.channel().localAddress().toString());
                     }
@@ -226,7 +217,5 @@ public class HTTPProxy {
         this.localPort = localPort;
     }
 
-    
-    
 
 }

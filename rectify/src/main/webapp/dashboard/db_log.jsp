@@ -24,8 +24,8 @@
         <tbody>
 
             <%
-                Query query = Rectify.getInstance().getHibSession().createQuery("from LogDbStatement order by id desc");
-                query.setMaxResults(100);
+                Query query = Rectify.getInstance().getHibSession().createQuery("FROM LogDbStatement order by id desc");
+                query.setMaxResults(50);
                 List<LogDbStatement> dbStatements = query.list();
 
                 for (LogDbStatement logDbStatment : dbStatements) {

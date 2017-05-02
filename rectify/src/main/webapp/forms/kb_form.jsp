@@ -91,10 +91,11 @@
 
             </div>
             <div class="col-md-8">
-                <button id="start_teaching_mode" class="btn btn-success" type="submit">Start teaching</button>
                 <button id="start" class="btn btn-success" type="submit">Save trainning routes</button>
 
             </div>
 
     </fieldset>
 </form>
+
+       

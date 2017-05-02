@@ -8,3 +8,4 @@
 
 
 
+ <a href="/rectify/actions/teach_rectify.jsp"><button id="start_teaching_mode" class="btn btn-success">Teach Rectify</button></a>

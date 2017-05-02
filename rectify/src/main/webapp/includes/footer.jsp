@@ -12,7 +12,7 @@
   
     <div class="navbar navbar-default ">
         <div class="container">
-            <p class="navbar-text pull-left">Copyright &COPY; 2016 <a href="https://www.inesc-id.pt/">INESC-ID</a> </p>
+            <p class="navbar-text pull-left">Copyright &COPY; 2017 <a href="https://www.inesc-id.pt/">INESC-ID</a> </p>
         </div>
     </div>
 

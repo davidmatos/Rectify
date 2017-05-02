@@ -28,7 +28,7 @@
 
 
         <ul class="nav navbar-nav navbar-right">
-            <li <%= p.equals("main") ? "class=\"active\"" : ""%>><a href="?p=main">Home</a></li>
+            <li <%= p.equals("main") ? "class=\"active\"" : ""%>><a href="?p=main">Dashboard</a></li>
             <li <%= p.equals("http_log") ? "class=\"active\"" : ""%>><a href="?p=http_log">HTTPLog</a></li>
             <li <%= p.equals("db_log") ? "class=\"active\"" : ""%>><a href="?p=db_log">DBLog</a></li>
             <li <%= p.equals("knowledge_base") ? "class=\"active\"" : ""%>><a href="?p=knowledge_base">Knowledge Base</a></li>
