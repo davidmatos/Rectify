@@ -1,4 +1,4 @@
-<%@page import="pt.inesc.rectify.hibernate.KbDbOp"%>
+<%@page import="pt.inesc.rectify.hibernate.KbDbStatement"%>
 <%@page import="java.util.HashSet"%>
 <%@page import="pt.inesc.rectify.Rectify"%>
 <%@page import="pt.inesc.rectify.RectifyLogger"%>
@@ -7,8 +7,8 @@
 <%
 
 Rectify.getInstance().setCurrentKbHttpRequest(null);
-Rectify.getInstance().setCurrentKbHttpResponse(null);
-Rectify.getInstance().setCurrentKbDbOps(new HashSet<KbDbOp>());
+
+Rectify.getInstance().setCurrentKbDbStatements(new HashSet<KbDbStatement>());
 
 
 

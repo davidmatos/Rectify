@@ -75,7 +75,7 @@
                             <tr>
                                 <th scope="row"><%= httpRequest.getId()%></th>
                                 <td><%= uri%></td>
-                                <td>TODO</td>
+                                <td><%= httpRequest.getHost() %></td>
                                 <td><%= httpRequest.getTs()%></td>
                             </tr>
                             <%

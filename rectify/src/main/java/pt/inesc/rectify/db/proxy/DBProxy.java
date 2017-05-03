@@ -186,7 +186,7 @@ class ThreadProxy extends Thread {
                     // TODO CREATE YOUR LOGIC HERE
                 }
             } catch (IOException e) {
-                RectifyLogger.severe("[103]" + e.getMessage());
+//                RectifyLogger.severe("[103]" + e.getMessage());
             } finally {
                 try {
                     if (server != null) {

@@ -6,7 +6,6 @@
     package pt.inesc.rectify.http.parser;
 
     import java.util.ArrayList;
-    import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
     import pt.inesc.rectify.hibernate.KbHttpRequest;
 
     /**

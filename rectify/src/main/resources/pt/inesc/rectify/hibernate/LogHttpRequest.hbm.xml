@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 2, 2017 4:04:57 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated May 2, 2017 6:29:09 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="pt.inesc.rectify.hibernate.LogHttpRequest" table="log_http_request" catalog="rectify">
+    <class name="pt.inesc.rectify.hibernate.LogHttpRequest" table="log_http_request" catalog="rectify" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="identity"></generator>
+            <generator class="identity" />
         </id>
         <property name="ts" type="timestamp">
             <column name="ts" length="19" not-null="true" />
@@ -20,11 +20,8 @@
         <property name="host" type="string">
             <column name="host" />
         </property>
-        <set name="logHttpResponses" table="log_http_response" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_log_http_request" not-null="true" />
-            </key>
-            <one-to-many class="pt.inesc.rectify.hibernate.LogHttpResponse" />
-        </set>
+        <property name="i" type="java.lang.Integer">
+            <column name="i" />
+        </property>
     </class>
 </hibernate-mapping>

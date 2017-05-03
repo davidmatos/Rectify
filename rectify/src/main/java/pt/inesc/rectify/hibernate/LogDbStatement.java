@@ -1,5 +1,5 @@
 package pt.inesc.rectify.hibernate;
-// Generated May 2, 2017 4:04:56 PM by Hibernate Tools 4.3.1
+// Generated May 2, 2017 6:29:09 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -13,6 +13,7 @@ public class LogDbStatement  implements java.io.Serializable {
      private Integer id;
      private Date ts;
      private String request;
+     private Integer i;
 
     public LogDbStatement() {
     }
@@ -21,9 +22,10 @@ public class LogDbStatement  implements java.io.Serializable {
     public LogDbStatement(Date ts) {
         this.ts = ts;
     }
-    public LogDbStatement(Date ts, String request) {
+    public LogDbStatement(Date ts, String request, Integer i) {
        this.ts = ts;
        this.request = request;
+       this.i = i;
     }
    
     public Integer getId() {
@@ -46,6 +48,13 @@ public class LogDbStatement  implements java.io.Serializable {
     
     public void setRequest(String request) {
         this.request = request;
+    }
+    public Integer getI() {
+        return this.i;
+    }
+    
+    public void setI(Integer i) {
+        this.i = i;
     }
 
 

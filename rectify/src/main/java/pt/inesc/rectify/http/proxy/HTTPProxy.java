@@ -92,8 +92,7 @@ public class HTTPProxy {
                         // Normal mode. Should store every
                         // request in the DB Log
 
-                        AsyncLogWriter.getInstance().addLogHttpRequest(originalRequest.toString(),
-                                originalRequest.getUri(), "host");
+                        AsyncLogWriter.getInstance().addLogHttpRequest(originalRequest.toString());
 
                     }
 

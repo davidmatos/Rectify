@@ -32,7 +32,9 @@
             <li <%= p.equals("http_log") ? "class=\"active\"" : ""%>><a href="?p=http_log">HTTPLog</a></li>
             <li <%= p.equals("db_log") ? "class=\"active\"" : ""%>><a href="?p=db_log">DBLog</a></li>
             <li <%= p.equals("knowledge_base") ? "class=\"active\"" : ""%>><a href="?p=knowledge_base">Knowledge Base</a></li>
-            <li <%= p.equals("trainning") ? "class=\"active\"" : ""%>><a href="?p=trainning">Trainning</a></li>
+            <li <%= p.equals("trainning") ? "class=\"active\"" : ""%>><a href="?p=trainning">Teach Rectify</a></li>
+            <li <%= p.equals("exp_eval") ? "class=\"active\"" : ""%>><a href="?p=exp_eval">Experimental Evaluation</a></li>
+            <li <%= p.equals("clear") ? "class=\"active\"" : ""%>><a href="?p=clear">Clear</a></li>
         </ul>
 
 

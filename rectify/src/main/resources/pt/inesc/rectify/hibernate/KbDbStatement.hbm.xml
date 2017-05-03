@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 2, 2017 4:04:57 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated May 2, 2017 6:29:09 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="pt.inesc.rectify.hibernate.KbDbStatement" table="kb_db_statement" catalog="rectify" optimistic-lock="version">
+    <class name="pt.inesc.rectify.hibernate.KbDbStatement" table="kb_db_statement" catalog="rectify">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="identity" />
+            <generator class="identity"></generator>
         </id>
         <many-to-one name="kbHttpRequest" class="pt.inesc.rectify.hibernate.KbHttpRequest" fetch="select">
             <column name="id_kb_http_request" />
