@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+
+  rectify:
+    image: tomcat:8.0-jre8
+    volumes:
+     - ./target/rectify-1.0-SNAPSHOT.war:/usr/local/tomcat/webapps/rectify.war
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "db"
+      
+  db:
+    image: mysql:5.7.22
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: rectify
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+    volumes:
+      - ./rectify.sql:/docker-entrypoint-initdb.d/init.sql
+    ports: 
+      - "3306:3306"
+
