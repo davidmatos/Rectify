@@ -4,7 +4,7 @@ Rectify is a new approach to recover from intrusions on applications running in 
 without requiring modifications to the software and the recovery can be performed by a system administrator. Machine learning techniques are used to associate the requests received by the application to the statements issued to the database.
 The statements issued in result of malicious requests can be  identified and  their effects  reversed under control of the administrator.
 
-![Architecture of Rectify](doc/img/rectify_arch.png "System architecture of Rectify")
+![System architecture of Rectify](doc/img/rectify_arch.png "System architecture of Rectify")
 
 For more information regarding Rectify please visit http://www.gsd.inesc-id.pt/~dmatos/publication/rectify/ 
 
@@ -41,6 +41,8 @@ The following table describes the addresses the services started by the docker-c
 | Wordpress Application | 8081 | http://localhost:8081                    |
 | Wordpress Database    | 3307 | jdbc:mysql://wordpress_db:3307/wordpress |
 
+
+![Dashboard of Rectify](doc/img/rectify_dashboard.png "Dashboard of Rectify")
 
 
 ## Built With
