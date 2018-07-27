@@ -49,7 +49,7 @@ The following table describes the addresses the services started by the docker-c
 
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [Wordpress](https://wordpress.org) - The protected application
-* [MySQL](https://www.mysql.com) - Dependency Management
+* [MySQL](https://www.mysql.com) - For storing the logs
 * [Docker](https://www.docker.com) - For deployment
 * [Tomcat](http://tomcat.apache.org) - The application server used for Rectify
 
